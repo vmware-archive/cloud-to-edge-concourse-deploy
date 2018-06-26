@@ -1,7 +1,12 @@
 ---
 image: williamyeh/ansible:ubuntu16.04
 
+before_script:
+  - echo $GITLAB_SSH_KEY >> ~/.ssh/id_rsa_gitlab
+  - cat ~/.ssh/config
+  - echo "Host *" >> ~/.ssh/config
+  - echo "IdentityFile ~/.ssh/id_rsa_gitlab" >> ~/.ssh/config
+
 test_additional_roles:
   script:
-    - ansible-galaxy install -r bootstrap/provision/additional_roles.yml
-
+    - ansible-galaxy install -r bootstrap/provision/additional_roles.yml -v -v
