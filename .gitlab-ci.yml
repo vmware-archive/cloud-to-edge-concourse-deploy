@@ -1,0 +1,7 @@
+---
+image: williamyeh/ansible:ubuntu16.04
+
+test_additional_roles:
+  script:
+    - ansible-galaxy install -r bootstrap/provision/additional_roles.yml
+

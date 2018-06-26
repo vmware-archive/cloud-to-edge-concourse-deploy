@@ -1,0 +1,8 @@
+# Copyright © 2018 VMware, Inc. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+# get these roles using ansible-galaxy
+---
+- name: vmware.azure-iot
+  src: git+ssh://git@gitlab.eng.vmware.com/vmworld2018/ansible-role-azure-iot.git
+- name: vmware.azure-edge
+  src: git+ssh://git@gitlab.eng.vmware.com/vmworld2018/ansible-role-azure-edge.git
