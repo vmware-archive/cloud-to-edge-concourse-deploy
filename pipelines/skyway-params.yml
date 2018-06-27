@@ -1,0 +1,180 @@
+enable_ansible_debug: false # set value to true for verbose output from ansible
+skyway_installer: skyway-concourse  # Set to name of installer or env or any value so resources can be identified
+
+# vCenter details to deploy the Mgmt OVAs (Mgr, Edge, Controller)
+vcenter_host: vcsa-01.corp.local.io       # EDIT - this is for deployment of the ovas for the mgmt plane
+vcenter_usr: administrator@vsphere.local  # EDIT - this is for deployment of the ovas for the mgmt plane
+vcenter_pwd: supersecret                  # EDIT - this is for deployment of the ovas for the mgmt plane
+vcenter_datacenter: Datacenter            # EDIT
+vcenter_datastore: Datastore              # EDIT
+vcenter_cluster: Cluster                  # EDIT
+vcenter_manager: vcenter-1                # EDIT
+vcenter_rp:                               # EDIT - resource pool where mgmt plane vms would get deployed
+
+# OVA general network settings
+ntpservers: 10.13.12.2                    # EDIT
+mgmt_portgroup: 'VM Network'              # EDIT
+dnsserver: 10.13.12.2                     # EDIT
+dnsdomain: corp.local.io                  # EDIT
+defaultgateway: 10.13.12.1                # EDIT
+netmask: 255.255.255.0                    # EDIT
+
+# Host a Webserver to serve the ova images and ovftool
+# Please edit the endpoint and the file names
+binary_webserver: http://10.sample.ip.100:8080
+
+# Download base ova, e.g.
+# https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64.ova
+base_ova: xenial-server-cloudimg-amd64.ova
+
+# Ensure ovftool is minimally v4.2
+# https://my.vmware.com/group/vmware/details?productId=614&downloadGroup=OVFTOOL420#
+ovftool_image: VMware-ovftool-4.3.0-7948156-lin.x86_64.bundle
+
+# Specify the compute venter to launch edge VMs
+compute_vcenter_manager:   # EDIT - Name for vCenter
+compute_vcenter_host:      # EDIT - Hostname for vCenter
+compute_vcenter_usr:       # EDIT - User with authority to create VMs
+compute_vcenter_pwd:       # EDIT - Password for user above
+compute_vcenter_cluster:   # EDIT - Cluster in which to create VMs
+
+# Using a separate vCenter to add Edges
+# Edge Specific vCenter settings
+# If Edges are going to use the same vCenter as Mgr, then dont set any of the following properties
+edge_vcenter_host:         # EDIT - If filled, then Edges would use this separate vcenter
+edge_vcenter_usr:          # EDIT -  Use Edge specific vCenter
+edge_vcenter_pwd:          # EDIT -  Use Edge specific vCenter
+edge_vcenter_datacenter:   # EDIT -  Use Edge specific vCenter
+edge_vcenter_datastore:    # EDIT -  Use Edge specific vCenter
+edge_vcenter_cluster:      # EDIT -  Use Edge specific vCenter
+edge_vcenter_rp:           # EDIT -  Use Edge specific vCenter
+edge_ntpservers:           # EDIT -  Use Edge specific vCenter
+edge_mgmt_portgroup:       # EDIT -  Use Edge specific vCenter
+edge_dnsserver:            # EDIT -  Use Edge specific vCenter
+edge_dnsdomain:            # EDIT -  Use Edge specific vCenter
+edge_defaultgateway:       # EDIT -  Use Edge specific vCenter
+edge_netmask:              # EDIT -  Use Edge specific vCenter
+
+# Edit following parameters
+skyway_manager_host_name: skyway.corp.local.io # Set as FQDN, will be used also as certificate common name
+skyway_manager_vm_name: 'skyway-manager'               # Can have spaces
+skyway_manager_ip: 10.13.12.50
+skyway_manager_admin_user: admin
+skyway_manager_admin_pwd: VMware1!         # Min 8 chars, upper, lower, number, special digit
+skyway_manager_root_pwd: VMware1!          # Min 8 chars, upper, lower, number, special digit
+
+# Following properties can be used for deploying controller to same cluster/rp
+skyway_controller_host_prefix: skyway-ctl   # Without spaces, Generated controller would be skyway-ctrl-1.corp.local.io,...
+skyway_controller_vm_name_prefix: 'Skyway Controller' # Generated edge host name would be "Skyway Controller-1"
+skyway_controller_ips: 10.13.12.51,10.13.12.52,10.13.12.53 # Should be 1 or 3 ips to maintain quorum for Controller Cluster
+skyway_controller_root_pwd: VMware1!       # Min 8 chars, upper, lower, number, special digit
+skyway_controller_cluster_pwd: VMware1!    # Min 8 chars, upper, lower, number, special digit
+
+skyway_controllers_config:
+
+skyway_edge_host_prefix: skyway-edge        # Without spaces, generated edge would be skyway-edge-1.corp.local.io,...
+skyway_edge_vm_name_prefix: 'Skyway Edge'   # Generated edge host name would be "Skyway Edge-1"
+skyway_edge_ips: 10.13.12.54,10.13.12.55   # comma separated ips, requires min 2 for HA
+skyway_edge_root_pwd: VMware1!
+skyway_edge_portgroup_ext: EDIT_ME_vlan-name-for-uplink     # For external routing
+skyway_edge_portgroup_transport: EDIT_ME_vlan-name-for-TEP  # For TEP/overlay
+
+# If ova deployment succeeded but controller membership failed or edges didnt get to join for any reason
+# enable rerun of the configure controllers
+rerun_configure_controllers: false  # set it to true if you want to rerun the configure controllers
+                                    # (as part of base ova install job) even as ova deployment succeeded
+
+# Edge network interfaces
+# Network1 and Network4 are for mgmt and not used for uplink
+# Network2 is for external uplink
+# Network3 is for overlay
+# Change only if necessary
+skyway_edge_overlay_interface: fp-eth1 # Wired to Network3
+skyway_edge_uplink_interface: fp-eth0  # Wired to Network2
+
+# Tunnel endpoint network ip pool - change pool_end based on # of members in the tep pool
+skyway_tep_pool_name: tep-ip-pool
+skyway_tep_pool_cidr: 192.168.213.0/24
+skyway_tep_pool_gateway: 192.168.213.1
+skyway_tep_pool_start: 192.168.213.10
+skyway_tep_pool_end: 192.168.213.200
+#skyway_tep_pool_nameserver: 192.168.213.2 # Not required
+
+# Memory reservation is turned ON by default with the Skyway OVAs.
+# This would mean a deployment of an edge or a mgr would reserve full memory
+# leading to memory constraints
+# if skyway_keep_reservation to true  - would keep reservation ON, recommended for production setups.
+# if skyway_keep_reservation to false - would turn reservation OFF, recommended for POCs, smaller setups.
+skyway_keep_reservation: true # for Prod setup
+
+# Default Sizing of Skyway VMs
+# Manager Sizing
+# small  : 2 vCPU,  8GB RAM
+# medium : 4 vCPU, 16GB RAM - default with OVA
+# large  : 8 vCPU, 32GB RAM
+# Controller Sizing
+# default: 4 vCPU, 16GB RAM
+# Edge Instance Sizing
+# small  : 2 vCPU,  4GB RAM - Too small - dont use
+# medium : 4 vCPU,  8GB RAM - default with OVA
+# large  : 8 vCPU, 16GB RAM
+
+# Controller is fixed to the 4 vCPU and 16 GB RAM
+# Change default size for deployment for edge and mgr
+# Size of the edge determines size of loadbalancers and # of lbrs.
+# So, choose the size of edge based on requirements
+skyway_mgr_deploy_size: small   # Recommended for real barebones demo, smallest setup
+#skyway_edge_deploy_size: medium # Recommended for POCs, smaller setup (# of lbrs very limited)
+skyway_edge_deploy_size: large  # Recommended when 4 small lbrs are required
+
+# More control over memory and vcpu to use
+# Not exposed and support removed
+# skyway_sizing_spec: |
+#   skyway_sizing:
+#     mgr:
+#       cpu: 2
+#       memory: 8192 # in MB, needs to be multiples of 1024
+#     controller:
+#       # Controller would be resized from 4vCPU/16GB to 2vCPU/8GB
+#       cpu: 2
+#       memory: 8192 # in MB, needs to be multiples of 1024
+#     edge:
+#       cpu: 2
+#       memory: 8192 # in MB, needs to be multiples of 1024
+
+
+skyway_overlay_hostswitch: hostswitch2
+skyway_vlan_hostswitch: hostswitch1
+
+# For Edge External uplink
+# Check with network admin if its tagged or untagged
+skyway_transport_vlan: 0
+
+skyway_vlan_transport_zone: vlan-tz
+skyway_overlay_transport_zone: overlay-tz
+
+skyway_pas_ncp_cluster_tag: pas1
+
+skyway_edge_cluster: 'Edge Cluster'
+
+# For outbound uplink connection used by Edge
+skyway_single_uplink_profile_name: "single-uplink-profile"
+skyway_single_uplink_profile_mtu: 1600 # Min 1600
+skyway_single_uplink_profile_vlan: 0 # Default
+
+# For internal overlay connection used by Esxi hosts
+skyway_overlay_profile_name: "host-overlay-profile"
+skyway_overlay_profile_mtu: 1600 # Min 1600
+skyway_overlay_profile_vlan: EDIT_ME # VLAN ID for the TEP/Overlay network
+
+# Specify an unused vmnic on esxi host to be used for skyway
+# can be multiple vmnics separated by comma
+skyway_esxi_vmnics: vmnic1 # vmnic1,vmnic2...
+skyway_t0router_spec:
+skyway_t1router_logical_switches_spec:
+skyway_ha_switching_profile_spec:
+skyway_container_ip_block_spec:
+skyway_external_ip_pool_spec:
+skyway_nat_rules_spec:
+skyway_csr_request_spec:
+skyway_lbr_spec:
