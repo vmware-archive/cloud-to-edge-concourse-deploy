@@ -2,5 +2,11 @@
   hosts: bootstrap
   become: True
   vars:
+    nginx_sites:
+      default:
+        - listen 81
+        - server_name _
+        - root "/home/vmware/deployroot/skyway-deploy/downloads"
+        - autoindex on
   roles:
-    - { name: "vmware.azure-iot", tags: "azure" }
+    - nginx
