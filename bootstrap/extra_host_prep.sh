@@ -14,7 +14,7 @@ if [ -f "$HOME/.ssh/id_rsa_gitlabaa" ]; then
 fi
 : ${GITLAB_SSH_KEY:=$KEY_FILE_CONTENTS}
 
-ssh "${opts[@]}" ${user}@$ip <<EOF
+ssh -t "${opts[@]}" ${user}@$ip <<EOF
 echo "${GITLAB_SSH_KEY}" > ~/.ssh/id_rsa_gitlab
 chmod go-rwx ~/.ssh/id_rsa_gitlab
 touch ~/.ssh/config

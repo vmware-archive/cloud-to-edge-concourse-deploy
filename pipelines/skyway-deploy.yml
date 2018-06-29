@@ -16,8 +16,6 @@ skyway_params: &skyway-params
   DNSDOMAIN: ((dnsdomain))
   DEFAULTGATEWAY: ((defaultgateway))
   NETMASK: ((netmask))
-  ESXI_HOSTS_ROOT_PWD: ((esxi_hosts_root_pwd))
-  ESXI_HOSTS_CONFIG: ((esxi_hosts_config))
   COMPUTE_VCENTER_HOST: ((compute_vcenter_host))
   COMPUTE_VCENTER_USR: ((compute_vcenter_usr))
   COMPUTE_VCENTER_PWD: ((compute_vcenter_pwd))
@@ -29,65 +27,20 @@ skyway_params: &skyway-params
   EDGE_VCENTER_DATACENTER: ((edge_vcenter_datacenter))
   EDGE_VCENTER_DATASTORE: ((edge_vcenter_datastore))
   EDGE_VCENTER_CLUSTER: ((edge_vcenter_cluster))
-  EDGE_NTPSERVERS: ((edge_ntpservers))
-  EDGE_MGMT_PORTGROUP: ((edge_mgmt_portgroup))
-  EDGE_DNSSERVER: ((edge_dnsserver))
-  EDGE_DNSDOMAIN: ((edge_dnsdomain))
-  EDGE_DEFAULTGATEWAY: ((edge_defaultgateway))
-  EDGE_NETMASK: ((edge_netmask))
-  SKYWAY_MANAGER_FQDN: ((skyway_manager_host_name))
   SKYWAY_MANAGER_VM_NAME: ((skyway_manager_vm_name))
   SKYWAY_MANAGER_HOST_NAME: ((skyway_manager_host_name))
   SKYWAY_MANAGER_IP: ((skyway_manager_ip))
   SKYWAY_MANAGER_ADMIN_USER: ((skyway_manager_admin_user))
   SKYWAY_MANAGER_ADMIN_PWD: ((skyway_manager_admin_pwd))
   SKYWAY_MANAGER_ROOT_PWD: ((skyway_manager_root_pwd))
-  SKYWAY_CONTROLLER_HOST_PREFIX: ((skyway_controller_host_prefix))
-  SKYWAY_CONTROLLER_VM_NAME_PREFIX: ((skyway_controller_vm_name_prefix))
-  SKYWAY_CONTROLLER_IPS: ((skyway_controller_ips))
-  SKYWAY_CONTROLLER_ROOT_PWD: ((skyway_controller_root_pwd))
-  SKYWAY_CONTROLLER_CLUSTER_PWD: ((skyway_controller_cluster_pwd))
-  SKYWAY_CONTROLLERS_CONFIG: ((skyway_controllers_config))
   SKYWAY_EDGE_HOST_PREFIX: ((skyway_edge_host_prefix))
   SKYWAY_EDGE_VM_NAME_PREFIX: ((skyway_edge_vm_name_prefix))
   SKYWAY_EDGE_IPS: ((skyway_edge_ips))
   SKYWAY_EDGE_ROOT_PWD: ((skyway_edge_root_pwd))
-  SKYWAY_EDGE_PORTGROUP_EXT: ((skyway_edge_portgroup_ext))
-  SKYWAY_EDGE_PORTGROUP_TRANSPORT: ((skyway_edge_portgroup_transport))
-  SKYWAY_KEEP_RESERVATION: ((skyway_keep_reservation))
   SKYWAY_MGR_DEPLOY_SIZE: ((skyway_mgr_deploy_size))
   SKYWAY_EDGE_DEPLOY_SIZE: ((skyway_edge_deploy_size))
-  SKYWAY_TEP_POOL_NAME: ((skyway_tep_pool_name))
-  SKYWAY_TEP_POOL_CIDR: ((skyway_tep_pool_cidr))
-  SKYWAY_TEP_POOL_GATEWAY: ((skyway_tep_pool_gateway))
-  SKYWAY_TEP_POOL_START: ((skyway_tep_pool_start))
-  SKYWAY_TEP_POOL_END: ((skyway_tep_pool_end))
-  SKYWAY_EDGE_OVERLAY_INTERFACE: ((skyway_edge_overlay_interface))
-  SKYWAY_EDGE_UPLINK_INTERFACE: ((skyway_edge_uplink_interface))
-  SKYWAY_OVERLAY_TRANSPORT_ZONE: ((skyway_overlay_transport_zone))
-  SKYWAY_VLAN_TRANSPORT_ZONE: ((skyway_vlan_transport_zone))
-  SKYWAY_SINGLE_UPLINK_PROFILE_NAME: ((skyway_single_uplink_profile_name))
-  SKYWAY_SINGLE_UPLINK_PROFILE_MTU: ((skyway_single_uplink_profile_mtu))
-  SKYWAY_SINGLE_UPLINK_PROFILE_VLAN: ((skyway_single_uplink_profile_vlan))
   SKYWAY_EDGE_CLUSTER: ((skyway_edge_cluster))
-  SKYWAY_OVERLAY_PROFILE_NAME: ((skyway_overlay_profile_name))
-  SKYWAY_OVERLAY_PROFILE_MTU: ((skyway_overlay_profile_mtu))
-  SKYWAY_OVERLAY_PROFILE_VLAN: ((skyway_overlay_profile_vlan))
-  SKYWAY_ESXI_VMNICS: ((skyway_esxi_vmnics))
-  SKYWAY_OVERLAY_HOSTSWITCH: ((skyway_overlay_hostswitch))
-  SKYWAY_VLAN_HOSTSWITCH: ((skyway_vlan_hostswitch))
-  SKYWAY_TRANSPORT_VLAN: ((skyway_transport_vlan))
-  SKYWAY_T0ROUTER_SPEC: ((skyway_t0router_spec))
-  SKYWAY_PAS_NCP_CLUSTER_TAG: ((skyway_pas_ncp_cluster_tag))
-  SKYWAY_T1ROUTER_LOGICAL_SWITCHES_SPEC: ((skyway_t1router_logical_switches_spec))
-  SKYWAY_HA_SWITCHING_PROFILE_SPEC: ((skyway_ha_switching_profile_spec))
-  SKYWAY_CONTAINER_IP_BLOCK_SPEC: ((skyway_container_ip_block_spec))
-  SKYWAY_EXTERNAL_IP_POOL_SPEC: ((skyway_external_ip_pool_spec))
-  SKYWAY_NAT_RULES_SPEC: ((skyway_nat_rules_spec))
-  SKYWAY_CSR_REQUEST_SPEC: ((skyway_csr_request_spec))
-  SKYWAY_LBR_SPEC: ((skyway_lbr_spec))
   ENABLE_ANSIBLE_DEBUG: ((enable_ansible_debug))
-  RERUN_CONFIGURE_CONTROLLERS: ((rerun_configure_controllers))
   GIT_KEY: ((git_key))
 
 groups:
@@ -119,7 +72,6 @@ resource_types:
   type: docker-image
   source:
     repository: pivotalservices/concourse-curl-resource
-    tag: latest
 
 resources:
 - name: skyway-pipeline
@@ -157,7 +109,7 @@ resources:
 
 jobs:
 
-- name: install-skyway
+- name: skyway-deploy
   plan:
   - aggregate:
     - get: skyway-pipeline
@@ -175,7 +127,7 @@ jobs:
     - get: skyway-pipeline
     - get: skyway-automation
       params: {globs: []}
-      passed: [install-skyway]
+      passed: [skyway-deploy]
       trigger: true
 
   - task: add-skyway-edge-gateway
