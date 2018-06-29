@@ -88,6 +88,7 @@ skyway_params: &skyway-params
   SKYWAY_LBR_SPEC: ((skyway_lbr_spec))
   ENABLE_ANSIBLE_DEBUG: ((enable_ansible_debug))
   RERUN_CONFIGURE_CONTROLLERS: ((rerun_configure_controllers))
+  GIT_KEY: ((git_key))
 
 groups:
 
@@ -200,8 +201,6 @@ jobs:
     - get: skyway-pipeline
     - get: skyway-automation
     - get: base-ova
-    - get: nsx-ctrl-ova
-    - get: nsx-edge-ova
     - get: ovftool
 
   - task: install-skyway
