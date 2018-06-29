@@ -45,23 +45,24 @@ skyway_params: &skyway-params
 
 groups:
 
-- name: full-install
+- name: full-deploy
   jobs:
-  - install-skyway
+  - skyway-deploy
+  - cloud-provider-buildout
   - add-skyway-edge-gateway
-  - config-skyway-extras
+  - deploy-edge-version
 
-- name: base-install
+- name: base-deploy
   jobs:
-  - standalone-install-skyway
+  - standalone-skyway-deploy
 
 - name: add-edge-gateway
   jobs:
   - standalone-add-skyway-edge-gateway
 
-- name: config-skyway-extras
+- name: deploy-edge-version
   jobs:
-  - standalone-config-skyway-extras
+  - standalone-deploy-edge-version
 
 # - name: cleanup
 #   jobs:
@@ -121,6 +122,16 @@ jobs:
     file: skyway-pipeline/tasks/install-skyway/task.yml
     params: *skyway-params
 
+- name: cloud-provider-buildout
+  plan:
+  - aggregate:
+    - get: skyway-pipeline
+    - get: skyway-automation
+
+  - task: initialize-cloud-iot
+    file: skyway-pipeline/tasks/initialize-cloud-iot/task.yml
+    params: *skyway-params
+
 - name: add-skyway-edge-gateway
   plan:
   - aggregate:
@@ -134,7 +145,7 @@ jobs:
     file: skyway-pipeline/tasks/add-skyway-edge-gateway/task.yml
     params: *skyway-params
 
-- name: config-skyway-extras
+- name: deploy-edge-version
   plan:
   - aggregate:
     - get: skyway-pipeline
@@ -143,11 +154,11 @@ jobs:
       passed: [add-skyway-edge-gateway]
       trigger: true
 
-  - task: config-skyway-extras
-    file: skyway-pipeline/tasks/config-skyway-extras/task.yml
+  - task: deploy-edge-version
+    file: skyway-pipeline/tasks/deploy-edge-version/task.yml
     params: *skyway-params
 
-- name: standalone-install-skyway
+- name: standalone-skyway-deploy
   plan:
   - aggregate:
     - get: skyway-pipeline
@@ -170,13 +181,13 @@ jobs:
     file: skyway-pipeline/tasks/add-skyway-edge-gateway/task.yml
     params: *skyway-params
 
-- name: standalone-config-skyway-extras
+- name: standalone-deploy-edge-version
   plan:
   - aggregate:
     - get: skyway-pipeline
     - get: skyway-automation
       params: {globs: []}
 
-  - task: config-skyway-extras
-    file: skyway-pipeline/tasks/config-skyway-extras/task.yml
+  - task: deploy-edge-version
+    file: skyway-pipeline/tasks/deploy-edge-version/task.yml
     params: *skyway-params
