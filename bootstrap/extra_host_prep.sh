@@ -8,7 +8,7 @@ if [ -n "$GITLAB_SSH_KEY" ] && ! [ -f "$HOME/.ssh/id_rsa_gitlab" ]; then
   ~/.ssh/id_rsa_gitlab that can connect to gitlab."
   exit 1
 fi
-if [ -f "$HOME/.ssh/id_rsa_gitlabaa" ]; then
+if [ -f "$HOME/.ssh/id_rsa_gitlab" ]; then
   echo "Using key file ~/.ssh/id_rsa_gitlab for gitlab access."
   KEY_FILE_CONTENTS=$(cat $HOME/.ssh/id_rsa_gitlab)
 fi
