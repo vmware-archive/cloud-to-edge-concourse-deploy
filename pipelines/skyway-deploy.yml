@@ -127,6 +127,9 @@ jobs:
   - aggregate:
     - get: skyway-pipeline
     - get: skyway-automation
+      params: {globs: []}
+      passed: [skyway-deploy]
+      trigger: true
 
   - task: initialize-cloud-iot
     file: skyway-pipeline/tasks/initialize-cloud-iot/task.yml
@@ -138,7 +141,7 @@ jobs:
     - get: skyway-pipeline
     - get: skyway-automation
       params: {globs: []}
-      passed: [skyway-deploy]
+      passed: [cloud-provider-buildout]
       trigger: true
 
   - task: add-skyway-edge-gateway
