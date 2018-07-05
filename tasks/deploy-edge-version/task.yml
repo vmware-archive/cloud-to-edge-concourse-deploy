@@ -4,7 +4,7 @@ platform: linux
 
 image_resource:
   type: docker-image
-  source: {repository: williamyeh/ansible:ubuntu16.04}
+  source: {repository: "williamyeh/ansible:ubuntu16.04"}
   
 params:
   SKYWAY_INSTALLER:
