@@ -11,7 +11,6 @@ export FUNCTIONS_DIR=$(cd $PIPELINE_DIR/functions && pwd)
 source $FUNCTIONS_DIR/create_ansible_cfg.sh
 source $FUNCTIONS_DIR/create_hosts.sh
 source $FUNCTIONS_DIR/copy_roles.sh
-#source $FUNCTIONS_DIR/generate_inventory.sh
 
 DEBUG=""
 if [ "$ENABLE_ANSIBLE_DEBUG" == "true" ]; then
@@ -28,9 +27,11 @@ cd skyway-automation
 echo "---" > extra_vars.yml
 echo "is_dict: True" >> extra_vars.yml
 
-echo ""
+$FUNCTIONS_DIR/generate_vars.py
 
-ansible-playbook $DEBUG -i hosts site.yml -e @extra_vars.yml
+echo ""
+set > my-env
+echo ansible-playbook $DEBUG -i hosts site.yml -e @extra_vars.yml
 STATUS=$?
 
 echo ""

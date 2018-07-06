@@ -121,8 +121,8 @@ azure_iot_group: ci-iot-group
 
 # ===== AWS Greengrass Settings =====
 # AWS auth settings
-aws_access_key_id: FIXME
-aws_secret_access_key: FIXME
+aws_access_key: FIXME
+aws_secret_key: FIXME
 
 # AWS Greengrass settings
 # This S3 bucket is used to store credentials, lambda code, etc.
