@@ -49,7 +49,18 @@ params:
   SKYWAY_EDGE_CLUSTER:
   ENABLE_ANSIBLE_DEBUG:
   GIT_KEY:
-
+  azure_cli_application_id:
+  azure_cli_application_key:
+  azure_cli_tenant_id:
+  azure_iot_hub_name:
+  azure_iot_group:
+  aws_access_key_id:
+  aws_secret_access_key:
+  greengrass_s3_bucket:
+  greengrass_group_names:
+  greengrass_device_stub:
+  greengrass_device_count:
+  greengrass_deploy:
 
 inputs:
   - name: skyway-pipeline

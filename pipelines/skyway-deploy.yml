@@ -42,6 +42,18 @@ skyway_params: &skyway-params
   SKYWAY_EDGE_CLUSTER: ((skyway_edge_cluster))
   ENABLE_ANSIBLE_DEBUG: ((enable_ansible_debug))
   GIT_KEY: ((git_key))
+  azure_cli_application_id: ((azure_cli_application_id))
+  azure_cli_application_key: ((azure_cli_application_key))
+  azure_cli_tenant_id: ((azure_cli_tenant_id))
+  azure_iot_hub_name: ((azure_iot_hub_name))
+  azure_iot_group: ((azure_iot_group))
+  aws_access_key_id: ((aws_access_key_id))
+  aws_secret_access_key: ((aws_secret_access_key))
+  greengrass_s3_bucket: ((greengrass_s3_bucket))
+  greengrass_group_names: ((greengrass_group_names))
+  greengrass_device_stub: ((greengrass_device_stub))
+  greengrass_device_count: ((greengrass_device_count))
+  greengrass_deploy: ((greengrass_deploy))
 
 groups:
 

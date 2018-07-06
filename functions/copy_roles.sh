@@ -13,5 +13,5 @@ function copy_roles {
   cp -r ansible-aws-greengrass/roles/greengrass-core skyway-automation/roles/greengrass-core
   cp -r ansible-aws-greengrass/roles/greengrass-deploy skyway-automation/roles/greengrass-deploy
   cp -r ansible-aws-greengrass/roles/greengrass-lambda skyway-automation/roles/greengrass-lambda
-
+  ansible-galaxy install huxoll.azure-cli
 }

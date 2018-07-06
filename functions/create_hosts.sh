@@ -3,10 +3,16 @@
 function create_hosts {
 
 cat > hosts <<-EOF
-[localhost]
+[azure-driver]
 localhost       ansible_connection=local
 
-[localhost:vars]
+[greengrass-driver]
+localhost       ansible_connection=local
+
+[iot-driver]
+localhost       ansible_connection=local
+
+[iot-driver:vars]
 ovfToolPath='/usr/bin'
 skywayOvaPath="$OVA_ISO_PATH"
 sshEnabled='True'
@@ -34,6 +40,18 @@ skywayCliPass="$SKYWAY_MANAGER_ROOT_PWD"
 dns_server="$DNSSERVER"
 dns_domain="$DNSDOMAIN"
 ntp_server="$NTPSERVERS"
+azure_cli_application_id="$azure_cli_application_id"
+azure_cli_application_key="$azure_cli_application_key"
+azure_cli_tenant_id="$azure_cli_tenant_id"
+azure_iot_hub_name="$azure_iot_hub_name"
+azure_iot_group="$azure_iot_group"
+aws_access_key_id="$aws_access_key_id"
+aws_secret_access_key="$aws_secret_access_key"
+greengrass_s3_bucket="$greengrass_s3_bucket"
+greengrass_group_names="$greengrass_group_names"
+greengrass_device_stub="$greengrass_device_stub"
+greengrass_device_count="$greengrass_device_count"
+greengrass_deploy="$greengrass_deploy"
 
 EOF
 
