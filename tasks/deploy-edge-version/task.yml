@@ -7,7 +7,7 @@ image_resource:
   source:
     repository: williamyeh/ansible
     tag: 'ubuntu16.04'
-      
+
 params:
   SKYWAY_INSTALLER:
   VCENTER_HOST:
@@ -54,6 +54,11 @@ params:
 inputs:
   - name: skyway-pipeline
   - name: skyway-automation
-
+  - name: base-ova
+  - name: ovftool
+  - name: ansible-role-azure-iot
+  - name: ansible-role-azure-edge
+  - name: ansible-aws-greengrass
+  
 run:
   path: skyway-pipeline/tasks/deploy-edge-version/task.sh
