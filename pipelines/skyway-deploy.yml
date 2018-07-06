@@ -89,6 +89,26 @@ resources:
     branch: master
     private_key: ((git_key))
 
+- name: ansible-role-azure-iot
+  type: git
+  source:
+    uri: git@gitlab.eng.vmware.com:vmworld2018/ansible-role-azure-edge
+    branch: master
+    private_key: ((git_key))
+
+- name: ansible-role-azure-edge
+  type: git
+  source:
+    uri: git@gitlab.eng.vmware.com:vmworld2018/ansible-role-azure-iot
+    branch: master
+    private_key: ((git_key))
+
+- name: ansible-aws-greengrass
+  type: git
+  source:
+    uri: https://github.com/vmware/ansible-aws-greengrass.git
+    branch: master
+
 - name: base-ova
   type: file-url
   source:
@@ -117,6 +137,9 @@ jobs:
     - get: skyway-automation
     - get: base-ova
     - get: ovftool
+    - get: ansible-role-azure-iot
+    - get: ansible-role-azure-edge
+    - get: ansible-aws-greengrass
 
   - task: install-skyway
     file: skyway-pipeline/tasks/install-skyway/task.yml
