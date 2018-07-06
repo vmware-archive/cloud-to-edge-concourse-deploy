@@ -31,7 +31,7 @@ $FUNCTIONS_DIR/generate_vars.py
 
 echo ""
 set > my-env
-echo ansible-playbook $DEBUG -i hosts site.yml -e @extra_vars.yml
+ansible-playbook $DEBUG -i hosts site.yml -e @extra_vars.yml
 STATUS=$?
 
 echo ""
