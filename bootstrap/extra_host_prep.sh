@@ -14,7 +14,7 @@ if [ -f "$HOME/.ssh/id_rsa_gitlab" ]; then
 fi
 : ${GITLAB_SSH_KEY:=$KEY_FILE_CONTENTS}
 
-ssh -t "${opts[@]}" ${user}@$ip <<EOF
+read -r -d '' ssh_commands <<EOF
 echo "${GITLAB_SSH_KEY}" > ~/.ssh/id_rsa_gitlab
 chmod go-rwx ~/.ssh/id_rsa_gitlab
 touch ~/.ssh/config
@@ -25,3 +25,5 @@ echo "StrictHostKeyChecking no" >> ~/.ssh/config
 echo "IdentityFile ~/.ssh/id_rsa_gitlab" >> ~/.ssh/config
 echo "### bootstrap end ###" >> ~/.ssh/config
 EOF
+
+ssh -t "${opts[@]}" ${user}@$ip <<EOF
