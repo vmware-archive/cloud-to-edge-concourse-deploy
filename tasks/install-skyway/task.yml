@@ -70,3 +70,6 @@ inputs:
   - name: ansible-aws-greengrass
 run:
   path: skyway-pipeline/tasks/install-skyway/task.sh
+  args:
+    - azure-driver=vmware.azure-cli
+    - greengrass-driver=vmware.awscli

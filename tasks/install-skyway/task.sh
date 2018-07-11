@@ -28,10 +28,12 @@ echo "---" > extra_vars.yml
 echo "is_dict: True" >> extra_vars.yml
 
 $FUNCTIONS_DIR/generate_vars.py
+$FUNCTIONS_DIR/generate_playbook.py $@
 
 echo ""
 set > my-env
-ansible-playbook $DEBUG -i hosts site.yml -e @extra_vars.yml
+echo "Args: $@" > my-args
+ansible-playbook $DEBUG -i hosts task-playbook.yml -e @extra_vars.yml
 STATUS=$?
 
 echo ""
