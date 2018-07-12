@@ -71,5 +71,7 @@ inputs:
 run:
   path: skyway-pipeline/tasks/install-skyway/task.sh
   args:
-    - azure-driver=vmware.azure-cli
+    - --host-role
+    - azure-driver=huxoll.azure-cli
+    - --host-role
     - greengrass-driver=vmware.awscli

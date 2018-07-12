@@ -57,3 +57,10 @@ inputs:
 
 run:
   path: skyway-pipeline/tasks/initialize-cloud-iot/task.sh
+  args:
+    - --host-role
+    - azure-driver=huxoll.azure-cli
+    - azure-driver=vmware.azure-iot
+    - --host-role
+    - greengrass-driver=vmware.awscli
+    - greengrass-driver=vmware.greengrass-init
