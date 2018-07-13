@@ -173,7 +173,7 @@ jobs:
     file: skyway-pipeline/tasks/initialize-cloud-iot/task.yml
     params: *skyway-params
 
-- name: add-skyway-edge-gateway
+- name: deploy-edge-version
   plan:
   - aggregate:
     - get: skyway-pipeline
@@ -182,22 +182,30 @@ jobs:
       passed: [cloud-provider-buildout]
       trigger: true
 
-  - task: add-skyway-edge-gateway
-    file: skyway-pipeline/tasks/add-skyway-edge-gateway/task.yml
+  - task: deploy-edge-version
+    file: skyway-pipeline/tasks/deploy-edge-version/task.yml
     params: *skyway-params
 
-- name: deploy-edge-version
+- name: add-skyway-edge-gateway
   plan:
   - aggregate:
     - get: skyway-pipeline
     - get: skyway-automation
       params: {globs: []}
-      passed: [add-skyway-edge-gateway]
+      passed: [deploy-edge-version]
       trigger: true
 
-  - task: deploy-edge-version
-    file: skyway-pipeline/tasks/deploy-edge-version/task.yml
+  - task: add-skyway-edge-gateway
+    file: skyway-pipeline/tasks/add-skyway-edge-gateway/task.yml
     params: *skyway-params
+
+- name: pipeline-complete-VERSION
+  plan:
+  - aggregate:
+    - get: skyway-automation
+      params: {globs: []}
+      passed: [add-skyway-edge-gateway]
+      trigger: true
 
 - name: standalone-skyway-deploy
   plan:
