@@ -80,4 +80,3 @@ run:
     - greengrass-driver=vmware.awscli
     - --host-role
     - greengrass-driver=vmware.greengrass-init
-    - --die
