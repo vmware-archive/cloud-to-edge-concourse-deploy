@@ -165,6 +165,9 @@ jobs:
       params: {globs: []}
       passed: [skyway-deploy]
       trigger: true
+    - get: ansible-role-azure-iot
+    - get: ansible-role-azure-edge
+    - get: ansible-aws-greengrass
 
   - task: initialize-cloud-iot
     file: skyway-pipeline/tasks/initialize-cloud-iot/task.yml
