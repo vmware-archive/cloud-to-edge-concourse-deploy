@@ -32,5 +32,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='System deployer.')
     parser.add_argument('--host-role', dest='host_role', action='append',
                         help='associate an Ansible role with a host')
+    parser.add_argument('--die', dest='die', action='store_true',
+                        help='end with an error to ease debugging')
     args = parser.parse_known_args()[0]
     generate_playbook(args.host_role)
+    if args.die:
+        sys.exit(1)
