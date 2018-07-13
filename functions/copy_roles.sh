@@ -12,6 +12,7 @@ function copy_roles {
   # TODO: make this more elegant and wildcard it.
   echo "Current dir is $PWD"
   mkdir -p skyway-automation/roles
+  pushd .
   cd skyway-automation/roles
   check_copy ansible-role-azure-iot vmware.azure-iot
   check_copy ansible-role-azure-edge vmware.azure-edge
@@ -21,4 +22,5 @@ function copy_roles {
   check_copy ansible-aws-greengrass/roles/greengrass-deploy vmware.greengrass-deploy
   check_copy ansible-aws-greengrass/roles/greengrass-lambda vmware.greengrass-lambda
   ansible-galaxy install huxoll.azure-cli
+  popd
 }
