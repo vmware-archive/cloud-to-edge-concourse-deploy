@@ -20,6 +20,8 @@ def generate_vars(args=None):
             emit_var(k, v, group_vars)
         if re.search("^azure", k, re.IGNORECASE):
             emit_var(k, v, group_vars)
+        if re.search("^greengrass", k, re.IGNORECASE):
+            emit_var(k, v, group_vars)
     group_vars.close()
 
 if __name__ == '__main__':
