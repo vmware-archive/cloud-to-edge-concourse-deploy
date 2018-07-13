@@ -104,14 +104,14 @@ resources:
 - name: ansible-role-azure-iot
   type: git
   source:
-    uri: git@gitlab.eng.vmware.com:vmworld2018/ansible-role-azure-edge
+    uri: git@gitlab.eng.vmware.com:vmworld2018/ansible-role-azure-iot
     branch: master
     private_key: ((git_key))
 
 - name: ansible-role-azure-edge
   type: git
   source:
-    uri: git@gitlab.eng.vmware.com:vmworld2018/ansible-role-azure-iot
+    uri: git@gitlab.eng.vmware.com:vmworld2018/ansible-role-azure-edge
     branch: master
     private_key: ((git_key))
 
