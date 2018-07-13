@@ -1,15 +1,22 @@
 #!/bin/bash
 
+function check_copy {
+  if ! [ -d $2 ]; then
+    cp -r ../../$1 $2
+  fi
+}
+
 function copy_roles {
 
   # TODO: make this more elegant and wildcard it.
   mkdir -p skyway-automation/roles
-  cp -r ansible-role-azure-iot skyway-automation/roles/vmware.azure-iot
-  cp -r ansible-role-azure-edge skyway-automation/roles/vmware.azure-edge
-  cp -r ansible-aws-greengrass/roles/awscli skyway-automation/roles/vmware.awscli
-  cp -r ansible-aws-greengrass/roles/greengrass-init skyway-automation/roles/vmware.greengrass-init
-  cp -r ansible-aws-greengrass/roles/greengrass-core skyway-automation/roles/vmware.greengrass-core
-  cp -r ansible-aws-greengrass/roles/greengrass-deploy skyway-automation/roles/vmware.greengrass-deploy
-  cp -r ansible-aws-greengrass/roles/greengrass-lambda skyway-automation/roles/vmware.greengrass-lambda
+  cd skyway-automation/roles
+  check_copy ansible-role-azure-iot vmware.azure-iot
+  check_copy ansible-role-azure-edge vmware.azure-edge
+  check_copy ansible-aws-greengrass/roles/awscli vmware.awscli
+  check_copy ansible-aws-greengrass/roles/greengrass-init vmware.greengrass-init
+  check_copy ansible-aws-greengrass/roles/greengrass-core vmware.greengrass-core
+  check_copy ansible-aws-greengrass/roles/greengrass-deploy vmware.greengrass-deploy
+  check_copy ansible-aws-greengrass/roles/greengrass-lambda vmware.greengrass-lambda
   ansible-galaxy install huxoll.azure-cli
 }
