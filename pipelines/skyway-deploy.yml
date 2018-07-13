@@ -63,6 +63,7 @@ groups:
   - cloud-provider-buildout
   - add-skyway-edge-gateway
   - deploy-edge-version
+  - pipeline-complete-VERSION
 
 - name: base-deploy
   jobs:
