@@ -2,6 +2,7 @@
 
 function check_copy {
   if ! [ -d $2 ]; then
+    echo "Copying role $1 into place."
     cp -r ../../$1 $2
   fi
 }
