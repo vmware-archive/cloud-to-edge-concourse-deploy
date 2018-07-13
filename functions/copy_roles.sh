@@ -10,6 +10,7 @@ function check_copy {
 function copy_roles {
 
   # TODO: make this more elegant and wildcard it.
+  echo "Current dir is $PWD"
   mkdir -p skyway-automation/roles
   cd skyway-automation/roles
   check_copy ansible-role-azure-iot vmware.azure-iot
