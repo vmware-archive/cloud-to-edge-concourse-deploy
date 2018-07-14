@@ -208,6 +208,10 @@ jobs:
       passed: [add-skyway-edge-gateway]
       trigger: true
 
+  - task: pipeline-complete-VERSION
+    file: skyway-pipeline/tasks/add-skyway-edge-gateway/task.yml
+    params: *skyway-params
+
 - name: standalone-skyway-deploy
   plan:
   - aggregate:
