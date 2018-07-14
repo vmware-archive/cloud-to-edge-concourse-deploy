@@ -63,7 +63,7 @@ groups:
   - cloud-provider-buildout
   - deploy-edge-version
   - add-skyway-edge-gateway
-  - pipeline-complete-VERSION
+  - pipeline-complete-VERSION-3
 
 - name: base-deploy
   jobs:
@@ -200,7 +200,7 @@ jobs:
     file: skyway-pipeline/tasks/add-skyway-edge-gateway/task.yml
     params: *skyway-params
 
-- name: pipeline-complete-VERSION
+- name: pipeline-complete-VERSION-3
   plan:
   - aggregate:
     - get: skyway-automation
@@ -208,7 +208,7 @@ jobs:
       passed: [add-skyway-edge-gateway]
       trigger: true
 
-  - task: pipeline-complete-VERSION
+  - task: pipeline-complete-VERSION-3
     file: skyway-pipeline/tasks/add-skyway-edge-gateway/task.yml
     params: *skyway-params
 
