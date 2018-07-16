@@ -70,7 +70,7 @@ inputs:
   - name: ansible-aws-greengrass
 
 run:
-  path: skyway-pipeline/tasks/initialize-cloud-iot/task.sh
+  path: skyway-pipeline/tasks/generic-ansible/task.sh
   args:
     - --host-role
     - azure-driver=huxoll.azure-cli

@@ -63,7 +63,7 @@ groups:
   - cloud-provider-buildout
   - deploy-edge-version
   - add-skyway-edge-gateway
-  - pipeline-complete-VERSION-3
+  - pipeline-complete-VERSION-4
 
 - name: base-deploy
   jobs:
@@ -174,20 +174,23 @@ jobs:
     file: skyway-pipeline/tasks/initialize-cloud-iot/task.yml
     params: *skyway-params
 
-- name: deploy-edge-version
+- name: configure-edge-version
   plan:
   - aggregate:
     - get: skyway-pipeline
     - get: skyway-automation
       params: {globs: []}
-      passed: [cloud-provider-buildout]
+      passed: [skyway-deploy]
       trigger: true
+    - get: ansible-role-azure-iot
+    - get: ansible-role-azure-edge
+    - get: ansible-aws-greengrass
 
   - task: deploy-edge-version
     file: skyway-pipeline/tasks/deploy-edge-version/task.yml
     params: *skyway-params
 
-- name: add-skyway-edge-gateway
+- name: add-skyway-edge-gateway-1-10
   plan:
   - aggregate:
     - get: skyway-pipeline
@@ -200,16 +203,55 @@ jobs:
     file: skyway-pipeline/tasks/add-skyway-edge-gateway/task.yml
     params: *skyway-params
 
-- name: pipeline-complete-VERSION-3
+- name: skyway-edge-gateway-configure-1-10
+  plan:
+  - aggregate:
+    - get: skyway-pipeline
+    - get: skyway-automation
+      params: {globs: []}
+      passed: [add-skyway-edge-gateway-1-10]
+      trigger: true
+
+  - task: skyway-edge-gateway-configure
+    file: skyway-pipeline/tasks/edge-gateway-configure/task.yml
+    params: *skyway-params
+
+- name: add-skyway-edge-gateway-11-20
+  plan:
+  - aggregate:
+    - get: skyway-pipeline
+    - get: skyway-automation
+      params: {globs: []}
+      passed: [deploy-edge-version]
+      trigger: true
+
+  - task: add-skyway-edge-gateway
+    file: skyway-pipeline/tasks/add-skyway-edge-gateway/task.yml
+    params: *skyway-params
+
+- name: skyway-edge-gateway-configure-11-20
+  plan:
+  - aggregate:
+    - get: skyway-pipeline
+    - get: skyway-automation
+      params: {globs: []}
+      passed: [add-skyway-edge-gateway-11-20]
+      trigger: true
+
+  - task: skyway-edge-gateway-configure
+    file: skyway-pipeline/tasks/edge-gateway-configure/task.yml
+    params: *skyway-params
+
+- name: pipeline-complete-VERSION-4
   plan:
   - aggregate:
     - get: skyway-automation
       params: {globs: []}
-      passed: [add-skyway-edge-gateway]
+      passed: [add-skyway-edge-gateway-11-20]
       trigger: true
 
-  - task: pipeline-complete-VERSION-3
-    file: skyway-pipeline/tasks/add-skyway-edge-gateway/task.yml
+  - task: pipeline-complete-VERSION-4
+    file: skyway-pipeline/tasks/noop/task.yml
     params: *skyway-params
 
 - name: standalone-skyway-deploy
