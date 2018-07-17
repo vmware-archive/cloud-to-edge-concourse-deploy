@@ -1,5 +1,6 @@
 ---
-
+# Launch Edge gateway VM
+# Start a VM to serve as the gateway for a particular edge network.
 platform: linux
 
 image_resource:
@@ -71,8 +72,9 @@ inputs:
   - name: ansible-role-azure-iot
   - name: ansible-role-azure-edge
   - name: ansible-aws-greengrass
+
 run:
-  path: skyway-pipeline/tasks/install-skyway/task.sh
+  path: skyway-pipeline/tasks/generic-ansible/task.sh
   args:
     - --host-role
     - azure-driver=huxoll.azure-cli

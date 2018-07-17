@@ -61,6 +61,9 @@ params:
   greengrass_device_stub:
   greengrass_device_count:
   greengrass_deploy:
+  skyway_edges:
+  skyway_edge_start:
+  skyway_edge_end:
 
 inputs:
   - name: skyway-pipeline

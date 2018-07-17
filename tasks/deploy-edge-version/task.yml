@@ -1,5 +1,6 @@
 ---
-
+# Deploy edge version
+# Create a cloud provider definition of edge
 platform: linux
 
 image_resource:
@@ -61,6 +62,9 @@ params:
   greengrass_device_stub:
   greengrass_device_count:
   greengrass_deploy:
+  skyway_edges:
+  skyway_edge_start:
+  skyway_edge_end:
 
 inputs:
   - name: skyway-pipeline
