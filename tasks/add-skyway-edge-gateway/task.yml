@@ -24,17 +24,6 @@ params:
   DNSDOMAIN:
   DEFAULTGATEWAY:
   NETMASK:
-  COMPUTE_VCENTER_HOST:
-  COMPUTE_VCENTER_USR:
-  COMPUTE_VCENTER_PWD:
-  COMPUTE_VCENTER_CLUSTER:
-  COMPUTE_VCENTER_MANAGER:
-  EDGE_VCENTER_HOST:
-  EDGE_VCENTER_USR:
-  EDGE_VCENTER_PWD:
-  EDGE_VCENTER_DATACENTER:
-  EDGE_VCENTER_DATASTORE:
-  EDGE_VCENTER_CLUSTER:
   SKYWAY_MANAGER_VM_NAME:
   SKYWAY_MANAGER_HOST_NAME:
   SKYWAY_MANAGER_IP:
@@ -74,4 +63,9 @@ inputs:
   - name: ansible-aws-greengrass
 
 run:
-  path: skyway-pipeline/tasks/add-skyline-edge-gateway/task.sh
+  path: skyway-pipeline/tasks/generic-ansible/task.sh
+  args:
+    - --host-role
+    - azure-driver=huxoll.azure-cli
+    - --host-role
+    - greengrass-driver=vmware.awscli
