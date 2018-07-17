@@ -60,23 +60,34 @@ base_ova: xenial-server-cloudimg-amd64.ova
 # https://my.vmware.com/group/vmware/details?productId=614&downloadGroup=OVFTOOL420#
 ovftool_image: VMware-ovftool-4.3.0-7948156-lin.x86_64.bundle
 
-# Specify the compute venter to launch edge VMs
-compute_vcenter_manager:   # EDIT - Name for vCenter
-compute_vcenter_host:      # EDIT - Hostname for vCenter
-compute_vcenter_usr:       # EDIT - User with authority to create VMs
-compute_vcenter_pwd:       # EDIT - Password for user above
-compute_vcenter_cluster:   # EDIT - Cluster in which to create VMs
-
-# Using a separate vCenter to add Edges
-# Edge Specific vCenter settings
-# If Edges are going to use the same vCenter as Mgr, then dont set any of the following properties
-edge_vcenter_host:         # EDIT - If filled, then Edges would use this separate vcenter
-edge_vcenter_usr:          # EDIT -  Use Edge specific vCenter
-edge_vcenter_pwd:          # EDIT -  Use Edge specific vCenter
-edge_vcenter_datacenter:   # EDIT -  Use Edge specific vCenter
-edge_vcenter_datastore:    # EDIT -  Use Edge specific vCenter
-edge_vcenter_cluster:      # EDIT -  Use Edge specific vCenter
-edge_vcenter_rp:           # EDIT -  Use Edge specific vCenter
+# For each Edge, define the vCenter settings
+skyway_edges:
+  - name: mygroup-1
+    vcenter_host:         # EDIT - Specific vCenter for this Edge
+    vcenter_usr:          # EDIT - Specific vCenter for this Edge
+    vcenter_pwd:          # EDIT - Specific vCenter for this Edge
+    vcenter_datacenter:   # EDIT - Specific vCenter for this Edge
+    vcenter_datastore:    # EDIT - Specific vCenter for this Edge
+    vcenter_cluster:      # EDIT - Specific vCenter for this Edge
+    vcenter_rp:           # EDIT - Specific vCenter for this Edge
+    edge_type: greengrass
+  - name: mygroup-2
+    vcenter_host:         # EDIT - Specific vCenter for this Edge
+    vcenter_usr:          # EDIT - Specific vCenter for this Edge
+    vcenter_pwd:          # EDIT - Specific vCenter for this Edge
+    vcenter_datacenter:   # EDIT - Specific vCenter for this Edge
+    vcenter_datastore:    # EDIT - Specific vCenter for this Edge
+    vcenter_cluster:      # EDIT - Specific vCenter for this Edge
+    vcenter_rp:           # EDIT - Specific vCenter for this Edge
+    edge_types: azure_iot, greengrass
+  - name: mygroup-3
+    vcenter_host:         # EDIT - Specific vCenter for this Edge
+    vcenter_usr:          # EDIT - Specific vCenter for this Edge
+    vcenter_pwd:          # EDIT - Specific vCenter for this Edge
+    vcenter_datacenter:   # EDIT - Specific vCenter for this Edge
+    vcenter_datastore:    # EDIT - Specific vCenter for this Edge
+    vcenter_cluster:      # EDIT - Specific vCenter for this Edge
+    vcenter_rp:           # EDIT - Specific vCenter for this Edge
 
 # Edit following parameters
 skyway_manager_host_name: skyway.corp.local.io # Set as FQDN
@@ -88,17 +99,17 @@ skyway_manager_root_pwd: VMware1!          # Min 8 chars, upper, lower, number, 
 
 skyway_edge_host_prefix: skyway-edge        # Without spaces, generated edge would be skyway-edge-1.corp.local.io,...
 skyway_edge_vm_name_prefix: 'Skyway Edge'   # Generated edge host name would be "Skyway Edge-1"
-skyway_edge_ips: 10.13.12.54,10.13.12.55   # comma separated ips
-skyway_edge_root_pwd: VMware1!
+#skyway_edge_ips: 10.13.12.54,10.13.12.55   # comma separated ips
+#skyway_edge_root_pwd: VMware1!
 
 # Default Sizing of Skyway VMs
 # Manager Sizing
 # small  : 2 vCPU,  8GB RAM
-# medium : 4 vCPU, 16GB RAM - default with OVA
+# medium : 4 vCPU, 16GB RAM
 # large  : 8 vCPU, 32GB RAM
 # Edge Gateway Sizing
-# small  : 2 vCPU,  4GB RAM - Too small - dont use
-# medium : 4 vCPU,  8GB RAM - default with OVA
+# small  : 2 vCPU,  4GB RAM
+# medium : 4 vCPU,  8GB RAM
 # large  : 8 vCPU, 16GB RAM
 
 # Change default size for deployment for edge and mgr
