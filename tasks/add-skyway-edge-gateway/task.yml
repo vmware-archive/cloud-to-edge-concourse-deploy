@@ -57,7 +57,6 @@ params:
 inputs:
   - name: skyway-pipeline
   - name: skyway-automation
-  - name: skyway-automation
   - name: ansible-role-azure-iot
   - name: ansible-role-azure-edge
   - name: ansible-aws-greengrass
