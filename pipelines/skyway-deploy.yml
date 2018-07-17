@@ -55,7 +55,7 @@ skyway_params: &skyway-params
   greengrass_device_count: ((greengrass_device_count))
   greengrass_deploy: ((greengrass_deploy))
   skyway_edges: ((skyway_edges))
-  
+
 skyway_params_1_10: &skyway_params_1_10
   <<: skyway_params
   skyway_edge_start: 1
@@ -79,7 +79,7 @@ groups:
   - launch-edge-gateway-vm-11-20
   - add-skyway-edge-gateway-11-20
   - skyway-edge-gateway-configure-11-20
-  - pipeline-complete-VERSION-8
+  - pipeline-complete-VERSION-9
 
 # - name: cleanup
 #   jobs:
@@ -95,28 +95,28 @@ resources:
 - name: skyway-pipeline
   type: git
   source:
-    uri: git@gitlab.eng.vmware.com:vmworld2018/skyway-concourse-deploy.git
+    uri: git@gitlab.com:vmworld2018/skyway-concourse-deploy.git
     branch: master
     private_key: ((git_key))
 
 - name: skyway-automation
   type: git
   source:
-    uri: git@gitlab.eng.vmware.com:vmworld2018/skyway-automation
+    uri: git@gitlab.com:vmworld2018/skyway-automation
     branch: master
     private_key: ((git_key))
 
 - name: ansible-role-azure-iot
   type: git
   source:
-    uri: git@gitlab.eng.vmware.com:vmworld2018/ansible-role-azure-iot
+    uri: git@gitlab.com:vmworld2018/ansible-role-azure-iot
     branch: master
     private_key: ((git_key))
 
 - name: ansible-role-azure-edge
   type: git
   source:
-    uri: git@gitlab.eng.vmware.com:vmworld2018/ansible-role-azure-edge
+    uri: git@gitlab.com:vmworld2018/ansible-role-azure-edge
     branch: master
     private_key: ((git_key))
 
@@ -290,7 +290,7 @@ jobs:
     file: skyway-pipeline/tasks/edge-gateway-configure/task.yml
     params: *skyway_params_11_20
 
-- name: pipeline-complete-VERSION-8
+- name: pipeline-complete-VERSION-9
   plan:
   - aggregate:
     - get: skyway-automation
@@ -298,6 +298,6 @@ jobs:
       passed: [add-skyway-edge-gateway-11-20]
       trigger: true
 
-  - task: pipeline-complete-VERSION-8
+  - task: pipeline-complete-VERSION-9
     file: skyway-pipeline/tasks/noop/task.yml
     params: *skyway-params
