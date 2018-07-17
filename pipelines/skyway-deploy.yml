@@ -16,17 +16,6 @@ skyway_params: &skyway-params
   DNSDOMAIN: ((dnsdomain))
   DEFAULTGATEWAY: ((defaultgateway))
   NETMASK: ((netmask))
-  COMPUTE_VCENTER_HOST: ((compute_vcenter_host))
-  COMPUTE_VCENTER_USR: ((compute_vcenter_usr))
-  COMPUTE_VCENTER_PWD: ((compute_vcenter_pwd))
-  COMPUTE_VCENTER_CLUSTER: ((compute_vcenter_cluster))
-  COMPUTE_VCENTER_MANAGER: ((compute_vcenter_manager))
-  EDGE_VCENTER_HOST: ((edge_vcenter_host))
-  EDGE_VCENTER_USR: ((edge_vcenter_usr))
-  EDGE_VCENTER_PWD: ((edge_vcenter_pwd))
-  EDGE_VCENTER_DATACENTER: ((edge_vcenter_datacenter))
-  EDGE_VCENTER_DATASTORE: ((edge_vcenter_datastore))
-  EDGE_VCENTER_CLUSTER: ((edge_vcenter_cluster))
   SKYWAY_MANAGER_VM_NAME: ((skyway_manager_vm_name))
   SKYWAY_MANAGER_HOST_NAME: ((skyway_manager_host_name))
   SKYWAY_MANAGER_IP: ((skyway_manager_ip))
@@ -35,8 +24,6 @@ skyway_params: &skyway-params
   SKYWAY_MANAGER_ROOT_PWD: ((skyway_manager_root_pwd))
   SKYWAY_EDGE_HOST_PREFIX: ((skyway_edge_host_prefix))
   SKYWAY_EDGE_VM_NAME_PREFIX: ((skyway_edge_vm_name_prefix))
-  SKYWAY_EDGE_IPS: ((skyway_edge_ips))
-  SKYWAY_EDGE_ROOT_PWD: ((skyway_edge_root_pwd))
   SKYWAY_MGR_DEPLOY_SIZE: ((skyway_mgr_deploy_size))
   SKYWAY_EDGE_DEPLOY_SIZE: ((skyway_edge_deploy_size))
   SKYWAY_EDGE_CLUSTER: ((skyway_edge_cluster))
@@ -55,14 +42,16 @@ skyway_params: &skyway-params
   greengrass_device_count: ((greengrass_device_count))
   greengrass_deploy: ((greengrass_deploy))
   skyway_edges: ((skyway_edges))
+  skyway_edge_start: ((skyway_edges))
+  skyway_edge_end: ((skyway_edges))
 
 skyway_params_1_10: &skyway_params_1_10
-  <<: skyway_params
+  <<: *skyway-params
   skyway_edge_start: 1
   skyway_edge_end: 10
 
 skyway_params_11_20: &skyway_params_11_20
-  <<: skyway_params
+  <<: *skyway-params
   skyway_edge_start: 11
   skyway_edge_end: 20
 
@@ -79,7 +68,7 @@ groups:
   - launch-edge-gateway-vm-11-20
   - add-skyway-edge-gateway-11-20
   - skyway-edge-gateway-configure-11-20
-  - pipeline-complete-VERSION-11
+  - pipeline-complete-VERSION-12
 
 # - name: cleanup
 #   jobs:
@@ -290,7 +279,7 @@ jobs:
     file: skyway-pipeline/tasks/edge-gateway-configure/task.yml
     params: *skyway_params_11_20
 
-- name: pipeline-complete-VERSION-11
+- name: pipeline-complete-VERSION-12
   plan:
   - aggregate:
     - get: skyway-automation
@@ -298,6 +287,6 @@ jobs:
       passed: [add-skyway-edge-gateway-11-20]
       trigger: true
 
-  - task: pipeline-complete-VERSION-11
+  - task: pipeline-complete-VERSION-12
     file: skyway-pipeline/tasks/noop/task.yml
     params: *skyway-params
