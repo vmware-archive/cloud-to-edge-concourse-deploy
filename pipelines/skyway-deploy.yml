@@ -2,31 +2,19 @@
 # Use reference instead of repeating the skyway params
 skyway_params: &skyway-params
   SKYWAY_INSTALLER: ((skyway_installer))
-  VCENTER_HOST: ((vcenter_host))
-  VCENTER_USR: ((vcenter_usr))
-  VCENTER_PWD: ((vcenter_pwd))
-  VCENTER_DATACENTER: ((vcenter_datacenter))
-  VCENTER_DATASTORE: ((vcenter_datastore))
-  VCENTER_CLUSTER: ((vcenter_cluster))
-  VCENTER_MANAGER: ((vcenter_manager))
-  VCENTER_RP: ((vcenter_rp))
   NTPSERVERS: ((ntpservers))
   MGMT_PORTGROUP: ((mgmt_portgroup))
   DNSSERVER: ((dnsserver))
   DNSDOMAIN: ((dnsdomain))
   DEFAULTGATEWAY: ((defaultgateway))
   NETMASK: ((netmask))
-  SKYWAY_MANAGER_VM_NAME: ((skyway_manager_vm_name))
-  SKYWAY_MANAGER_HOST_NAME: ((skyway_manager_host_name))
-  SKYWAY_MANAGER_IP: ((skyway_manager_ip))
-  SKYWAY_MANAGER_ADMIN_USER: ((skyway_manager_admin_user))
-  SKYWAY_MANAGER_ADMIN_PWD: ((skyway_manager_admin_pwd))
-  SKYWAY_MANAGER_ROOT_PWD: ((skyway_manager_root_pwd))
-  SKYWAY_EDGE_HOST_PREFIX: ((skyway_edge_host_prefix))
-  SKYWAY_EDGE_VM_NAME_PREFIX: ((skyway_edge_vm_name_prefix))
-  SKYWAY_MGR_DEPLOY_SIZE: ((skyway_mgr_deploy_size))
-  SKYWAY_EDGE_DEPLOY_SIZE: ((skyway_edge_deploy_size))
-  SKYWAY_EDGE_CLUSTER: ((skyway_edge_cluster))
+  binary_webserver: ((binary_webserver))
+  base_ova: ((base_ova))
+  skyway_edge_vm_basename: ((edge_vm_basename))
+  skyway_edge_vm_user: ((edge_vm_user))
+  skyway_edge_vm_password: ((edge_vm_password))
+  skyway_edge_vm_ssh_pub_key: ((vm_ssh_pub_key))
+  skyway_edge_deploy_size: ((skyway_edge_deploy_size))
   ENABLE_ANSIBLE_DEBUG: ((enable_ansible_debug))
   GIT_KEY: ((git_key))
   azure_cli_application_id: ((azure_cli_application_id))
@@ -68,7 +56,7 @@ groups:
   - launch-edge-gateway-vm-11-20
   - add-skyway-edge-gateway-11-20
   - skyway-edge-gateway-configure-11-20
-  - pipeline-complete-VERSION-15
+  - pipeline-complete-VERSION-17
 
 
 - name: cloud-provider
@@ -294,14 +282,15 @@ jobs:
     file: skyway-pipeline/tasks/edge-gateway-configure/task.yml
     params: *skyway_params_11_20
 
-- name: pipeline-complete-VERSION-15
+- name: pipeline-complete-VERSION-17
   plan:
   - aggregate:
+    - get: skyway-pipeline
     - get: skyway-automation
       params: {globs: []}
       passed: [skyway-edge-gateway-configure-1-10, skyway-edge-gateway-configure-11-20]
       trigger: true
 
-  - task: pipeline-complete-VERSION-15
+  - task: pipeline-complete-VERSION-17
     file: skyway-pipeline/tasks/noop/task.yml
     params: *skyway-params
