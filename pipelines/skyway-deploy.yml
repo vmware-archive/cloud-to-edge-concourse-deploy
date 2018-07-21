@@ -1,9 +1,9 @@
 ---
 # Use reference instead of repeating the skyway params
 skyway_params: &skyway-params
+  ENABLE_ANSIBLE_DEBUG: ((enable_ansible_debug))
   SKYWAY_INSTALLER: ((skyway_installer))
   NTPSERVERS: ((ntpservers))
-  MGMT_PORTGROUP: ((mgmt_portgroup))
   DNSSERVER: ((dnsserver))
   DNSDOMAIN: ((dnsdomain))
   DEFAULTGATEWAY: ((defaultgateway))
@@ -15,7 +15,6 @@ skyway_params: &skyway-params
   skyway_edge_vm_password: ((edge_vm_password))
   skyway_edge_vm_ssh_pub_key: ((vm_ssh_pub_key))
   skyway_edge_deploy_size: ((skyway_edge_deploy_size))
-  ENABLE_ANSIBLE_DEBUG: ((enable_ansible_debug))
   GIT_KEY: ((git_key))
   azure_cli_application_id: ((azure_cli_application_id))
   azure_cli_application_key: ((azure_cli_application_key))
@@ -56,7 +55,7 @@ groups:
   - launch-edge-gateway-vm-11-20
   - add-skyway-edge-gateway-11-20
   - skyway-edge-gateway-configure-11-20
-  - pipeline-complete-VERSION-17
+  - pipeline-complete-VERSION-18
 
 
 - name: cloud-provider
@@ -112,6 +111,13 @@ resources:
     branch: master
     private_key: ((git_key))
 
+- name: ansible-role-skyway-edge-vm
+  type: git
+  source:
+    uri: git@gitlab.com:vmworld2018/ansible-role-skyway-edge-vm
+    branch: master
+    private_key: ((git_key))
+
 - name: ansible-aws-greengrass
   type: git
   source:
@@ -146,8 +152,6 @@ jobs:
     - get: skyway-automation
     - get: base-ova
     - get: ovftool
-    - get: ansible-role-azure-iot
-    - get: ansible-role-azure-edge
     - get: ansible-aws-greengrass
 
   - task: install-skyway
@@ -282,7 +286,7 @@ jobs:
     file: skyway-pipeline/tasks/edge-gateway-configure/task.yml
     params: *skyway_params_11_20
 
-- name: pipeline-complete-VERSION-17
+- name: pipeline-complete-VERSION-18
   plan:
   - aggregate:
     - get: skyway-pipeline
@@ -291,6 +295,6 @@ jobs:
       passed: [skyway-edge-gateway-configure-1-10, skyway-edge-gateway-configure-11-20]
       trigger: true
 
-  - task: pipeline-complete-VERSION-17
+  - task: pipeline-complete-VERSION-18
     file: skyway-pipeline/tasks/noop/task.yml
     params: *skyway-params

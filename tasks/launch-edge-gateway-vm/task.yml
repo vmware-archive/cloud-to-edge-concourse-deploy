@@ -10,32 +10,20 @@ image_resource:
     tag: 'latest'
 
 params:
+  ENABLE_ANSIBLE_DEBUG:
   SKYWAY_INSTALLER:
-  VCENTER_HOST:
-  VCENTER_USR:
-  VCENTER_PWD:
-  VCENTER_DATACENTER:
-  VCENTER_DATASTORE:
-  VCENTER_CLUSTER:
-  VCENTER_RP:
-  VCENTER_MANAGER:
   NTPSERVERS:
-  MGMT_PORTGROUP:
   DNSSERVER:
   DNSDOMAIN:
   DEFAULTGATEWAY:
   NETMASK:
-  SKYWAY_MANAGER_VM_NAME:
-  SKYWAY_MANAGER_HOST_NAME:
-  SKYWAY_MANAGER_IP:
-  SKYWAY_MANAGER_ADMIN_PWD:
-  SKYWAY_MANAGER_ROOT_PWD:
-  SKYWAY_EDGE_HOST_PREFIX:
-  SKYWAY_EDGE_VM_NAME_PREFIX:
-  SKYWAY_MGR_DEPLOY_SIZE:
-  SKYWAY_EDGE_DEPLOY_SIZE:
-  SKYWAY_EDGE_CLUSTER:
-  ENABLE_ANSIBLE_DEBUG:
+  binary_webserver:
+  base_ova:
+  skyway_edge_vm_basename:
+  skyway_edge_vm_user:
+  skyway_edge_vm_password:
+  skyway_edge_vm_ssh_pub_key:
+  skyway_edge_deploy_size:
   GIT_KEY:
   azure_cli_application_id:
   azure_cli_application_key:
@@ -56,14 +44,10 @@ params:
 inputs:
   - name: skyway-pipeline
   - name: skyway-automation
-  - name: ansible-role-azure-iot
-  - name: ansible-role-azure-edge
-  - name: ansible-aws-greengrass
+  - name: ansible-role-skyway-edge-vm
 
 run:
   path: skyway-pipeline/tasks/generic-ansible/task.sh
   args:
     - --host-role
-    - azure-driver=huxoll.azure-cli
-    - --host-role
-    - greengrass-driver=vmware.awscli
+    - iot-driver=vmware.skyway-edge-vm

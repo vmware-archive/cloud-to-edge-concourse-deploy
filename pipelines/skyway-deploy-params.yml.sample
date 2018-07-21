@@ -1,6 +1,9 @@
-enable_ansible_debug: false # set value to true for verbose output from ansible
-skyway_installer: skyway-concourse  # Set to name of installer or env or any value so resources can be identified
+# set value to true for verbose output from ansible
+enable_ansible_debug: false
+# Set to name of installer or env or any value so resources can be identified
+skyway_installer: skyway-concourse
 
+# This is a key with access to download private repos
 git_key: |
   -----BEGIN RSA PRIVATE KEY-----
   MIIEpAIBAAKCAQEA0p9crSf1c5JBjpe5eoXJFjllFOJdT0X1/TrLM3xA+v+/QT/s
@@ -30,19 +33,8 @@ git_key: |
   DXjXUYmXDNh43f4gwhqq8DGGZ/JSgzu1yrTWQ2FmlhTUgiAhBiQb+Q==
   -----END RSA PRIVATE KEY-----
 
-# vCenter details to deploy the Mgmt OVAs (Mgr, Edge, Controller)
-vcenter_host: vcsa-01.corp.local.io       # EDIT - this is for deployment of the ovas for the mgmt plane
-vcenter_usr: administrator@vsphere.local  # EDIT - this is for deployment of the ovas for the mgmt plane
-vcenter_pwd: supersecret                  # EDIT - this is for deployment of the ovas for the mgmt plane
-vcenter_datacenter: Datacenter            # EDIT
-vcenter_datastore: Datastore              # EDIT
-vcenter_cluster: Cluster                  # EDIT
-vcenter_manager: vcenter-1                # EDIT
-vcenter_rp:                               # EDIT - resource pool where mgmt plane vms would get deployed
-
 # OVA general network settings
 ntpservers: 10.13.12.2                    # EDIT
-mgmt_portgroup: 'VM Network'              # EDIT
 dnsserver: 10.13.12.2                     # EDIT
 dnsdomain: corp.local.io                  # EDIT
 defaultgateway: 10.13.12.1                # EDIT
@@ -60,9 +52,25 @@ base_ova: xenial-server-cloudimg-amd64.ova
 # https://my.vmware.com/group/vmware/details?productId=614&downloadGroup=OVFTOOL420#
 ovftool_image: VMware-ovftool-4.3.0-7948156-lin.x86_64.bundle
 
-# For each Edge, define the vCenter settings
+# Stub for edge VM names: will become [edge_vm_basename]-[edge_group]
+skyway_edge_vm_basename: edgevm
+# Default credentials to add to Edge VMs
+skyway_edge_vm_user: edgevm
+skyway_edge_vm_password: skyway-passZ!
+
+# Key to be deposited on created VMs for access.
+# Automation should have access to a corresponding private key.
+skyway_edge_vm_ssh_pub_key: |
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCX/adFOoYeKAcD81EogrCj5/2FsmJD2i/5geS
+  eGvQZkPmpz54ro5xem6hu4kZaqG3Ej5HGdvZkcNRCK8bTcoRtqHS+uNxfBVAXwgf9G9De8A2wi+
+  R8iugGbTyIEthHcgC4DruE9oGLry8U3NjWwIy0VUDR7xKkjYRe7HAr/UdXI3FYl59KGtOJdbOzI
+  XoNQsY9OTgXgTaKCcFoI0y11MQrbqK+twcjz3ItyhecI8xxwHBcZnAomUFIuS8BeFaiUAj7HtMm
+  Fpc3+plSOiODPI8rPhm5pBiq5FiVrLfjEaBx/1frXuMQ3eaQaQiWzfW8PDVVhnK7650tDg9yjx+
+  bIFop nobody@this-is-a-placeholder-key.com
+
+# For each Edge, define the vCenter/VM settings
 skyway_edges:
-  - name: mygroup-1
+  - edge_group: mygroup-1
     vcenter_host:         # EDIT - Specific vCenter for this Edge
     vcenter_usr:          # EDIT - Specific vCenter for this Edge
     vcenter_pwd:          # EDIT - Specific vCenter for this Edge
@@ -70,8 +78,7 @@ skyway_edges:
     vcenter_datastore:    # EDIT - Specific vCenter for this Edge
     vcenter_cluster:      # EDIT - Specific vCenter for this Edge
     vcenter_rp:           # EDIT - Specific vCenter for this Edge
-    edge_type: greengrass
-  - name: mygroup-2
+  - edge_group: mygroup-2
     vcenter_host:         # EDIT - Specific vCenter for this Edge
     vcenter_usr:          # EDIT - Specific vCenter for this Edge
     vcenter_pwd:          # EDIT - Specific vCenter for this Edge
@@ -79,8 +86,23 @@ skyway_edges:
     vcenter_datastore:    # EDIT - Specific vCenter for this Edge
     vcenter_cluster:      # EDIT - Specific vCenter for this Edge
     vcenter_rp:           # EDIT - Specific vCenter for this Edge
-    edge_types: azure_iot, greengrass
-  - name: mygroup-3
+  - edge_group: mygroup-3
+    vcenter_host:         # EDIT - Specific vCenter for this Edge
+    vcenter_usr:          # EDIT - Specific vCenter for this Edge
+    vcenter_pwd:          # EDIT - Specific vCenter for this Edge
+    vcenter_datacenter:   # EDIT - Specific vCenter for this Edge
+    vcenter_datastore:    # EDIT - Specific vCenter for this Edge
+    vcenter_cluster:      # EDIT - Specific vCenter for this Edge
+    vcenter_rp:           # EDIT - Specific vCenter for this Edge
+  - edge_group: mygroup-4
+    vcenter_host:         # EDIT - Specific vCenter for this Edge
+    vcenter_usr:          # EDIT - Specific vCenter for this Edge
+    vcenter_pwd:          # EDIT - Specific vCenter for this Edge
+    vcenter_datacenter:   # EDIT - Specific vCenter for this Edge
+    vcenter_datastore:    # EDIT - Specific vCenter for this Edge
+    vcenter_cluster:      # EDIT - Specific vCenter for this Edge
+    vcenter_rp:           # EDIT - Specific vCenter for this Edge
+  - edge_group: mygroup-5
     vcenter_host:         # EDIT - Specific vCenter for this Edge
     vcenter_usr:          # EDIT - Specific vCenter for this Edge
     vcenter_pwd:          # EDIT - Specific vCenter for this Edge
@@ -89,46 +111,31 @@ skyway_edges:
     vcenter_cluster:      # EDIT - Specific vCenter for this Edge
     vcenter_rp:           # EDIT - Specific vCenter for this Edge
 
-# Edit following parameters
-skyway_manager_host_name: skyway.corp.local.io # Set as FQDN
-skyway_manager_vm_name: 'skyway-manager'               # Can have spaces
-skyway_manager_ip: 10.13.12.50
-skyway_manager_admin_user: admin
-skyway_manager_admin_pwd: VMware1!         # Min 8 chars, upper, lower, number, special digit
-skyway_manager_root_pwd: VMware1!          # Min 8 chars, upper, lower, number, special digit
-
-skyway_edge_host_prefix: skyway-edge        # Without spaces, generated edge would be skyway-edge-1.corp.local.io,...
-skyway_edge_vm_name_prefix: 'Skyway Edge'   # Generated edge host name would be "Skyway Edge-1"
-#skyway_edge_ips: 10.13.12.54,10.13.12.55   # comma separated ips
-#skyway_edge_root_pwd: VMware1!
-
-# Default Sizing of Skyway VMs
-# Manager Sizing
-# small  : 2 vCPU,  8GB RAM
-# medium : 4 vCPU, 16GB RAM
-# large  : 8 vCPU, 32GB RAM
-# Edge Gateway Sizing
+# Default Sizing of Skyway Edge VMs
 # small  : 2 vCPU,  4GB RAM
 # medium : 4 vCPU,  8GB RAM
 # large  : 8 vCPU, 16GB RAM
 
-# Change default size for deployment for edge and mgr
-skyway_mgr_deploy_size: small
+# Change default size for deployment for edge VMs
 skyway_edge_deploy_size: small
 
-skyway_edge_cluster: 'Edge Cluster'
-
+# ===== Azure IoT Settings =====
 # Azure auth settings
 azure_cli_application_id: FIXME
 azure_cli_application_key: FIXME
 azure_cli_tenant_id: FIXME
 
-# ===== Azure IoT Settings =====
 # Name of the IoT hub
 azure_iot_hub_name: ci-iot-hub
 
 # Group to contain the IoT resources (will be created).
 azure_iot_group: ci-iot-group
+
+# Names for the Edges to be created.
+azure_iot_edge_names:
+  - mygroup-1
+  - mygroup-4
+  - mygroup-5
 
 # ===== AWS Greengrass Settings =====
 # AWS auth settings
