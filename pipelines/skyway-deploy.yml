@@ -55,7 +55,7 @@ groups:
   - launch-edge-gateway-vm-11-20
   - add-skyway-edge-gateway-11-20
   - skyway-edge-gateway-configure-11-20
-  - pipeline-complete-VERSION-19
+  - pipeline-complete-VERSION-20
 
 
 - name: cloud-provider
@@ -198,9 +198,7 @@ jobs:
       params: {globs: []}
       passed: [configure-edge-version]
       trigger: true
-    - get: ansible-role-azure-iot
-    - get: ansible-role-azure-edge
-    - get: ansible-aws-greengrass
+    - get: ansible-role-skyway-edge-vm
 
   - task: launch-edge-gateway-vm
     file: skyway-pipeline/tasks/launch-edge-gateway-vm/task.yml
@@ -246,9 +244,7 @@ jobs:
       params: {globs: []}
       passed: [configure-edge-version]
       trigger: true
-    - get: ansible-role-azure-iot
-    - get: ansible-role-azure-edge
-    - get: ansible-aws-greengrass
+    - get: ansible-role-skyway-edge-vm
 
   - task: launch-edge-gateway-vm
     file: skyway-pipeline/tasks/launch-edge-gateway-vm/task.yml
@@ -286,7 +282,7 @@ jobs:
     file: skyway-pipeline/tasks/edge-gateway-configure/task.yml
     params: *skyway_params_11_20
 
-- name: pipeline-complete-VERSION-19
+- name: pipeline-complete-VERSION-20
   plan:
   - aggregate:
     - get: skyway-pipeline
@@ -295,6 +291,6 @@ jobs:
       passed: [skyway-edge-gateway-configure-1-10, skyway-edge-gateway-configure-11-20]
       trigger: true
 
-  - task: pipeline-complete-VERSION-19
+  - task: pipeline-complete-VERSION-20
     file: skyway-pipeline/tasks/noop/task.yml
     params: *skyway-params
