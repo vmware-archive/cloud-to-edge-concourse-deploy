@@ -13,6 +13,7 @@ skyway_params: &skyway-params
   skyway_edge_vm_basename: ((skyway_edge_vm_basename))
   skyway_edge_vm_user: ((skyway_edge_vm_user))
   skyway_edge_vm_password: ((skyway_edge_vm_password))
+  skyway_edge_vm_network: ((skyway_edge_vm_network))
   skyway_edge_vm_ssh_pub_key: ((skyway_edge_vm_ssh_pub_key))
   skyway_edge_deploy_size: ((skyway_edge_deploy_size))
   GIT_KEY: ((git_key))
@@ -55,7 +56,7 @@ groups:
   - launch-edge-gateway-vm-11-20
   - add-skyway-edge-gateway-11-20
   - skyway-edge-gateway-configure-11-20
-  - pipeline-complete-VERSION-22
+  - pipeline-complete-VERSION-23
 
 
 - name: cloud-provider
@@ -282,7 +283,7 @@ jobs:
     file: skyway-pipeline/tasks/edge-gateway-configure/task.yml
     params: *skyway_params_11_20
 
-- name: pipeline-complete-VERSION-22
+- name: pipeline-complete-VERSION-23
   plan:
   - aggregate:
     - get: skyway-pipeline
@@ -291,6 +292,6 @@ jobs:
       passed: [skyway-edge-gateway-configure-1-10, skyway-edge-gateway-configure-11-20]
       trigger: true
 
-  - task: pipeline-complete-VERSION-22
+  - task: pipeline-complete-VERSION-23
     file: skyway-pipeline/tasks/noop/task.yml
     params: *skyway-params

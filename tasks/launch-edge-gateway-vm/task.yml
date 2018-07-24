@@ -22,6 +22,7 @@ params:
   skyway_edge_vm_basename:
   skyway_edge_vm_user:
   skyway_edge_vm_password:
+  skyway_edge_vm_network:
   skyway_edge_vm_ssh_pub_key:
   skyway_edge_deploy_size:
   GIT_KEY:
