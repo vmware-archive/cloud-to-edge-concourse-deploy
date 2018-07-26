@@ -25,6 +25,7 @@ skyway_params: &skyway-params
   aws_access_key: ((aws_access_key))
   aws_secret_key: ((aws_secret_key))
   greengrass_s3_bucket: ((greengrass_s3_bucket))
+  skip_s3_uploads: false
   greengrass_group_names: ((greengrass_group_names))
   greengrass_device_stub: ((greengrass_device_stub))
   greengrass_device_count: ((greengrass_device_count))
@@ -56,7 +57,7 @@ groups:
   - launch-edge-gateway-vm-11-20
   - add-skyway-edge-gateway-11-20
   - skyway-edge-gateway-configure-11-20
-  - pipeline-complete-VERSION-26
+  - pipeline-complete-VERSION-27
 
 
 - name: cloud-provider
@@ -283,7 +284,7 @@ jobs:
     file: skyway-pipeline/tasks/edge-gateway-configure/task.yml
     params: *skyway_params_11_20
 
-- name: pipeline-complete-VERSION-26
+- name: pipeline-complete-VERSION-27
   plan:
   - aggregate:
     - get: skyway-pipeline
@@ -292,6 +293,6 @@ jobs:
       passed: [skyway-edge-gateway-configure-1-10, skyway-edge-gateway-configure-11-20]
       trigger: true
 
-  - task: pipeline-complete-VERSION-26
+  - task: pipeline-complete-VERSION-27
     file: skyway-pipeline/tasks/noop/task.yml
     params: *skyway-params

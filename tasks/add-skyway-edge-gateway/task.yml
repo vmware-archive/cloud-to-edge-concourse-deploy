@@ -33,6 +33,7 @@ params:
   aws_access_key:
   aws_secret_key:
   greengrass_s3_bucket:
+  skip_s3_uploads:
   greengrass_group_names:
   greengrass_device_stub:
   greengrass_device_count:
