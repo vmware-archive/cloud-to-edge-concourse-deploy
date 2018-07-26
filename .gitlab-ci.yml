@@ -19,4 +19,4 @@ test_additional_roles:
 test_generic_task:
   script:
     - cd tasks/generic-ansible
-    - ./task.sh
+    - ./task.sh --host-role localhost=huxoll.azure-cli

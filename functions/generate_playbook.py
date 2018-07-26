@@ -5,6 +5,7 @@ import re
 import argparse
 
 playbook = "task-playbook.yml"
+hosts = []
 
 def emit_role(host, role, playbook_file):
     if host not in hosts:
