@@ -57,7 +57,7 @@ groups:
   - launch-edge-gateway-vm-11-20
   - add-skyway-edge-gateway-11-20
   - skyway-edge-gateway-configure-11-20
-  - pipeline-complete-VERSION-28
+  - pipeline-complete-VERSION-29
 
 
 - name: cloud-provider
@@ -73,6 +73,10 @@ groups:
   - launch-edge-gateway-vm-11-20
   - add-skyway-edge-gateway-11-20
   - skyway-edge-gateway-configure-11-20
+
+- name: complete
+  jobs:
+  - pipeline-complete-VERSION-29
 
 # - name: cleanup
 #   jobs:
@@ -284,7 +288,7 @@ jobs:
     file: skyway-pipeline/tasks/edge-gateway-configure/task.yml
     params: *skyway_params_11_20
 
-- name: pipeline-complete-VERSION-28
+- name: pipeline-complete-VERSION-29
   plan:
   - aggregate:
     - get: skyway-pipeline
@@ -293,6 +297,6 @@ jobs:
       passed: [skyway-edge-gateway-configure-1-10, skyway-edge-gateway-configure-11-20]
       trigger: true
 
-  - task: pipeline-complete-VERSION-28
+  - task: pipeline-complete-VERSION-29
     file: skyway-pipeline/tasks/noop/task.yml
     params: *skyway-params

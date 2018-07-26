@@ -11,6 +11,7 @@ before_script:
   - echo "Host *" >> ~/.ssh/config
   - echo "StrictHostKeyChecking no" >> ~/.ssh/config
   - echo "IdentityFile ~/.ssh/id_rsa_gitlab" >> ~/.ssh/config
+  - ansible install -r requirements.yml
 
 test_additional_roles:
   script:
