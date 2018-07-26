@@ -15,3 +15,8 @@ before_script:
 test_additional_roles:
   script:
     - ansible-galaxy install -r bootstrap/provision/additional_roles.yml -v -v
+
+test_generic_task:
+  script:
+    - cd tasks/generic-ansible
+    - ./task.sh

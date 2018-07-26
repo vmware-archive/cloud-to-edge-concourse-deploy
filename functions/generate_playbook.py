@@ -5,7 +5,6 @@ import re
 import argparse
 
 playbook = "task-playbook.yml"
-hosts = []
 
 def emit_role(host, role, playbook_file):
     if host not in hosts:
@@ -18,9 +17,13 @@ def emit_role(host, role, playbook_file):
 
 def generate_playbook(args=None):
     playbook_file = open(playbook, "w")
+    # Create a minimal valid playbook, even with no arguments.
     playbook_file.write("---\n")
-
-    hosts = []
+    playbook_file.write("- hosts: localhost\n")
+    playbook_file.write("  connection: local\n")
+    playbook_file.write("  gather_facts: no\n")
+    if not args:
+        return
     for hosts_and_role in args:
         print (">> %s" % hosts_and_role)
         vals = re.split('=', hosts_and_role)
