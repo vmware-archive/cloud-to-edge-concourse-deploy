@@ -57,10 +57,10 @@ run:
     - --host-role
     - azure-driver=vmware.azure-iot
     - --host-role
-    - azure-driver=vmware.azure-edge
-    - --host-role
     - greengrass-driver=vmware.awscli
     - --host-role
     - greengrass-driver=vmware.greengrass-init
     - --host-role
-    - greengrass-driver=vmware.greengrass-core
+    - azure-edge=vmware.azure-edge
+    - --host-role
+    - greengrass-core=vmware.greengrass-core

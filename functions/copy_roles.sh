@@ -23,6 +23,7 @@ function copy_roles {
   check_copy ansible-aws-greengrass/roles/greengrass-core vmware.greengrass-core
   check_copy ansible-aws-greengrass/roles/greengrass-deploy vmware.greengrass-deploy
   check_copy ansible-aws-greengrass/roles/greengrass-lambda vmware.greengrass-lambda
-  ansible-galaxy install huxoll.azure-cli
+  cd ..
+  [ -f requirements.yml ] && ansible-galaxy install -r requirements.yml 
   popd
 }
