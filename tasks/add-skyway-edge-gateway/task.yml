@@ -22,6 +22,7 @@ params:
   skyway_edge_vm_basename:
   skyway_edge_vm_user:
   skyway_edge_vm_password:
+  skyway_edge_vm_ssh_priv_key:
   skyway_edge_vm_ssh_pub_key:
   skyway_edge_deploy_size:
   GIT_KEY:
@@ -49,7 +50,7 @@ inputs:
   - name: ansible-role-azure-edge
   - name: ansible-aws-greengrass
   - name: ansible-role-skyway-edge-vm
-  
+
 run:
   path: skyway-pipeline/tasks/generic-ansible/task.sh
   args:
