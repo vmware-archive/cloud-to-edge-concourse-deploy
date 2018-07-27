@@ -29,9 +29,11 @@ params:
   azure_cli_tenant_id:
   azure_iot_hub_name:
   azure_iot_group:
+  azure_iot_edge_names:
   aws_access_key:
   aws_secret_key:
   greengrass_s3_bucket:
+  skip_s3_uploads:
   greengrass_group_names:
   greengrass_device_stub:
   greengrass_device_count:
@@ -54,3 +56,4 @@ run:
     - greengrass-driver=vmware.awscli
     - --host-role
     - greengrass-driver=vmware.greengrass-init
+    - --die
