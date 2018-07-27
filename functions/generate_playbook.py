@@ -5,7 +5,7 @@ import re
 import argparse
 
 playbook = "task-playbook.yml"
-hosts = ["localhost"]
+hosts = []
 
 def emit_role(host, role, playbook_file):
     if host not in hosts:
@@ -26,7 +26,6 @@ def generate_playbook(args=None):
     try:
         if (os.environ['ENABLE_ANSIBLE_DEBUG'] in ['true', 'True', 'yes', '1']):
             # Add a debugging role to display active variables.
-            playbook_file.write("  roles:\n")
             emit_role("localhost", "dumpall", playbook_file)
     except KeyError:
         pass
