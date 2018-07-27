@@ -14,7 +14,7 @@ source $FUNCTIONS_DIR/copy_roles.sh
 
 DEBUG=""
 if [ "$ENABLE_ANSIBLE_DEBUG" == "true" ]; then
-  DEBUG="-vvv"
+  DEBUG="-vv"
 fi
 
 create_hosts
