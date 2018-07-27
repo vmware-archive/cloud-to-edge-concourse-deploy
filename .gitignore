@@ -1,2 +1,7 @@
 *.ova
 *.bundle
+# ignore some generated files
+ansible.cfg
+hosts
+task-playbook.yml
+skyway-automation
