@@ -15,7 +15,7 @@ force_multiline = [
 
 def emit_var(key, value, vars_file):
     if key in force_multiline:
-        lines = value.split('\n')
+        lines = value.splitlines()
         vars_file.write("%s: |\n" % key.lower())
         for line in lines:
             vars_file.write("  %s\n" % line)

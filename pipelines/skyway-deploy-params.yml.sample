@@ -58,6 +58,8 @@ skyway_edge_vm_basename: edgevm
 skyway_edge_vm_user: edgevm
 skyway_edge_vm_password: skyway-passZ!
 
+# Private key for connecting to Edge VMs.  If set, should correspond to the 
+# pub key below
 skyway_edge_vm_ssh_priv_key: |
   -----BEGIN RSA PRIVATE KEY-----
   MIIEpAIBAAKCAQEA0p9crSf1c5JBjpe5eoXJFjllFOJdT0X1/TrLM3xA+v+/QT/s
