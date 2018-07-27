@@ -48,7 +48,8 @@ inputs:
   - name: ansible-role-azure-iot
   - name: ansible-role-azure-edge
   - name: ansible-aws-greengrass
-
+  - name: ansible-role-skyway-edge-vm
+  
 run:
   path: skyway-pipeline/tasks/generic-ansible/task.sh
   args:
