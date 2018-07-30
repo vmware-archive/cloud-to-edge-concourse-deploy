@@ -47,4 +47,5 @@ if __name__ == '__main__':
     args = parser.parse_known_args()[0]
     generate_playbook(args.host_role)
     if args.die:
+        print ('Exiting early, die directive was passed in.')
         sys.exit(1)
