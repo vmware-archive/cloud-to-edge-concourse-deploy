@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+trap times EXIT
 
 export ROOT_DIR=`pwd`
 
@@ -33,9 +34,15 @@ $FUNCTIONS_DIR/generate_playbook.py $@
 echo ""
 set > my-env
 echo "Args: $@" > my-args
+echo "ansible-playbook $DEBUG -i hosts task-playbook.yml -e @extra_vars.yml"
+start=`date +%s`
 ansible-playbook $DEBUG -i hosts task-playbook.yml -e @extra_vars.yml
 STATUS=$?
+sleep 5
+end=`date +%s`
 
+echo "Finished in $((($(date +%s)-$start)/60)) minutes."
 echo ""
+
 
 exit $STATUS
