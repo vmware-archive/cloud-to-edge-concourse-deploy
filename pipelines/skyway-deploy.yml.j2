@@ -36,15 +36,12 @@ skyway_params: &skyway-params
   skyway_edge_start: 0
   skyway_edge_end: 0
 
-skyway_params_1_10: &skyway_params_1_10
+{% for range in ranges %}
+skyway_params_{{ range.min }}_{{ range.max }}: &skyway_params_{{ loop.index }}
   <<: *skyway-params
-  skyway_edge_start: 1
-  skyway_edge_end: 10
-
-skyway_params_11_20: &skyway_params_11_20
-  <<: *skyway-params
-  skyway_edge_start: 11
-  skyway_edge_end: 20
+  skyway_edge_start: {{ range.min }}
+  skyway_edge_end: {{ range.max }}
+{% endfor %}
 
 groups:
 
@@ -53,13 +50,12 @@ groups:
   - skyway-deploy
   - cloud-provider-buildout
   - configure-edge-version
-  - launch-edge-gateway-vm-1-10
-  - add-skyway-edge-gateway-1-10
-  - skyway-edge-gateway-configure-1-10
-  - launch-edge-gateway-vm-11-20
-  - add-skyway-edge-gateway-11-20
-  - skyway-edge-gateway-configure-11-20
-  - pipeline-complete-VERSION-45
+{% for range in ranges %}
+  - launch-edge-gateway-vm-{{ range.min }}-{{ range.max }}
+  - add-skyway-edge-gateway-{{ range.min }}-{{ range.max }}
+  - skyway-edge-gateway-configure-{{ range.min }}-{{ range.max }}
+{% endfor %}
+  - pipeline-complete-VERSION-44
 
 
 - name: cloud-provider
@@ -69,16 +65,15 @@ groups:
 
 - name: gateways
   jobs:
-  - launch-edge-gateway-vm-1-10
-  - add-skyway-edge-gateway-1-10
-  - skyway-edge-gateway-configure-1-10
-  - launch-edge-gateway-vm-11-20
-  - add-skyway-edge-gateway-11-20
-  - skyway-edge-gateway-configure-11-20
+{% for range in ranges %}
+  - launch-edge-gateway-vm-{{ range.min }}-{{ range.max }}
+  - add-skyway-edge-gateway-{{ range.min }}-{{ range.max }}
+  - skyway-edge-gateway-configure-{{ range.min }}-{{ range.max }}
+{% endfor %}
 
 - name: complete
   jobs:
-  - pipeline-complete-VERSION-45
+  - pipeline-complete-VERSION-44
 
 # - name: cleanup
 #   jobs:
@@ -198,7 +193,8 @@ jobs:
     file: skyway-pipeline/tasks/deploy-edge-version/task.yml
     params: *skyway-params
 
-- name: launch-edge-gateway-vm-1-10
+{% for range in ranges %}
+- name: launch-edge-gateway-vm-{{ range.min }}-{{ range.max }}
   plan:
   - aggregate:
     - get: skyway-pipeline
@@ -210,15 +206,15 @@ jobs:
 
   - task: launch-edge-gateway-vm
     file: skyway-pipeline/tasks/launch-edge-gateway-vm/task.yml
-    params: *skyway_params_1_10
+    params: *skyway_params_{{ loop.index }}
 
-- name: add-skyway-edge-gateway-1-10
+- name: add-skyway-edge-gateway-{{ range.min }}-{{ range.max }}
   plan:
   - aggregate:
     - get: skyway-pipeline
     - get: skyway-automation
       params: {globs: []}
-      passed: [launch-edge-gateway-vm-1-10]
+      passed: [launch-edge-gateway-vm-{{ range.min }}-{{ range.max }}]
       trigger: true
     - get: ansible-role-azure-iot
     - get: ansible-role-azure-edge
@@ -227,15 +223,15 @@ jobs:
 
   - task: add-skyway-edge-gateway
     file: skyway-pipeline/tasks/add-skyway-edge-gateway/task.yml
-    params: *skyway_params_1_10
+    params: *skyway_params_{{ loop.index }}
 
-- name: skyway-edge-gateway-configure-1-10
+- name: skyway-edge-gateway-configure-{{ range.min }}-{{ range.max }}
   plan:
   - aggregate:
     - get: skyway-pipeline
     - get: skyway-automation
       params: {globs: []}
-      passed: [add-skyway-edge-gateway-1-10]
+      passed: [add-skyway-edge-gateway-{{ range.min }}-{{ range.max }}]
       trigger: true
     - get: ansible-role-azure-iot
     - get: ansible-role-azure-edge
@@ -244,65 +240,21 @@ jobs:
 
   - task: skyway-edge-gateway-configure
     file: skyway-pipeline/tasks/edge-gateway-configure/task.yml
-    params: *skyway_params_1_10
+    params: *skyway_params_{{ loop.index }}
+{% endfor %}
 
-- name: launch-edge-gateway-vm-11-20
+- name: pipeline-complete-VERSION-44
   plan:
   - aggregate:
     - get: skyway-pipeline
     - get: skyway-automation
       params: {globs: []}
-      passed: [configure-edge-version]
-      trigger: true
-    - get: ansible-role-skyway-edge-vm
-
-  - task: launch-edge-gateway-vm
-    file: skyway-pipeline/tasks/launch-edge-gateway-vm/task.yml
-    params: *skyway_params_11_20
-
-- name: add-skyway-edge-gateway-11-20
-  plan:
-  - aggregate:
-    - get: skyway-pipeline
-    - get: skyway-automation
-      params: {globs: []}
-      passed: [launch-edge-gateway-vm-11-20]
-      trigger: true
-    - get: ansible-role-azure-iot
-    - get: ansible-role-azure-edge
-    - get: ansible-aws-greengrass
-    - get: ansible-role-skyway-edge-vm
-
-  - task: add-skyway-edge-gateway
-    file: skyway-pipeline/tasks/add-skyway-edge-gateway/task.yml
-    params: *skyway_params_11_20
-
-- name: skyway-edge-gateway-configure-11-20
-  plan:
-  - aggregate:
-    - get: skyway-pipeline
-    - get: skyway-automation
-      params: {globs: []}
-      passed: [add-skyway-edge-gateway-11-20]
-      trigger: true
-    - get: ansible-role-azure-iot
-    - get: ansible-role-azure-edge
-    - get: ansible-aws-greengrass
-    - get: ansible-role-skyway-edge-vm
-
-  - task: skyway-edge-gateway-configure
-    file: skyway-pipeline/tasks/edge-gateway-configure/task.yml
-    params: *skyway_params_11_20
-
-- name: pipeline-complete-VERSION-45
-  plan:
-  - aggregate:
-    - get: skyway-pipeline
-    - get: skyway-automation
-      params: {globs: []}
-      passed: [skyway-edge-gateway-configure-1-10, skyway-edge-gateway-configure-11-20]
+      passed:
+{% for range in ranges %}
+        - skyway-edge-gateway-configure-{{ range.min }}-{{ range.max }}
+{% endfor %}
       trigger: true
 
-  - task: pipeline-complete-VERSION-45
+  - task: pipeline-complete-VERSION-44
     file: skyway-pipeline/tasks/noop/task.yml
     params: *skyway-params
