@@ -7,3 +7,7 @@ fi
 if [ ! -f xenial-server-cloudimg-amd64.ova ]; then
   curl -L -o xenial-server-cloudimg-amd64.ova https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64.ova
 fi
+
+if [ ! -f xenial-server-cloudimg-arm64.ova ]; then
+  curl -L -o xenial-server-cloudimg-arm64.ova https://s3-us-west-2.amazonaws.com/skyway-dl/xenial-server-cloudimg-arm64.ova
+fi
