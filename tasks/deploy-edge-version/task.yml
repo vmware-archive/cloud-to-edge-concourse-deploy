@@ -18,7 +18,6 @@ params:
   DEFAULTGATEWAY:
   NETMASK:
   binary_webserver:
-  base_ova:
   skyway_edge_vm_basename:
   skyway_edge_vm_user:
   skyway_edge_vm_password:
