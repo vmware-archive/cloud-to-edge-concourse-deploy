@@ -52,6 +52,8 @@ run:
     - --host-role
     - azure-driver=huxoll.azure-cli
     - --host-role
+    - azure-driver=vmware.azure-iot
+    - --host-role
     - greengrass-driver=vmware.awscli
     - --host-role
     - greengrass-driver=vmware.greengrass-init

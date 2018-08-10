@@ -58,7 +58,7 @@ groups:
   - add-skyway-edge-gateway-{{ range.min }}-{{ range.max }}
   - skyway-edge-gateway-configure-{{ range.min }}-{{ range.max }}
 {% endfor %}
-  - pipeline-complete-VERSION-45{{ config_version|default("") }}
+  - pipeline-complete-VERSION-46{{ config_version|default("") }}
 
 
 - name: cloud-provider
@@ -76,7 +76,7 @@ groups:
 
 - name: complete
   jobs:
-  - pipeline-complete-VERSION-45{{ config_version|default("") }}
+  - pipeline-complete-VERSION-46{{ config_version|default("") }}
 
 # - name: cleanup
 #   jobs:
@@ -246,7 +246,7 @@ jobs:
     params: *skyway_params_{{ loop.index }}
 {% endfor %}
 
-- name: pipeline-complete-VERSION-45{{ config_version|default("") }}
+- name: pipeline-complete-VERSION-46{{ config_version|default("") }}
   plan:
   - aggregate:
     - get: skyway-pipeline
@@ -258,6 +258,6 @@ jobs:
 {% endfor %}
       trigger: true
 
-  - task: pipeline-complete-VERSION-45{{ config_version|default("") }}
+  - task: pipeline-complete-VERSION-46{{ config_version|default("") }}
     file: skyway-pipeline/tasks/noop/task.yml
     params: *skyway-params
