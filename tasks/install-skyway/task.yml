@@ -47,11 +47,11 @@ params:
   skyway_bundle_params:
 
 inputs:
-  - name: skyway-pipeline
-  - name: skyway-automation
-  - name: ansible-aws-greengrass
+  - name: pipeline
+  - name: automation
+  - name: aws-greengrass
 run:
-  path: skyway-pipeline/tasks/generic-ansible/task.sh
+  path: pipeline/tasks/generic-ansible/task.sh
   args:
     - --host-role
     - azure-driver=huxoll.azure-cli

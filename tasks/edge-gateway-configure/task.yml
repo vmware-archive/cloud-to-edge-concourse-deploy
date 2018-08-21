@@ -51,19 +51,19 @@ params:
   skyway_bundle_params:
 
 inputs:
-  - name: skyway-pipeline
-  - name: skyway-automation
-  - name: ansible-role-azure-iot
-  - name: ansible-role-azure-edge
+  - name: pipeline
+  - name: automation
+  - name: azure-iot
+  - name: azure-edge
   - name: ansible-aws-greengrass
-  - name: ansible-role-skyway-edge-vm
+  - name: edge-vm
 
 run:
-  path: skyway-pipeline/tasks/generic-ansible/task.sh
+  path: pipeline/tasks/generic-ansible/task.sh
   args:
     - --host-role
     - azure-driver=huxoll.azure-cli
     - --host-role
     - greengrass-driver=vmware.awscli
     - --host-role
-    - iot-driver=vmware.skyway-edge-vm
+    - iot-driver=vmware.edge-vm

@@ -20,8 +20,8 @@ fi
 create_hosts
 copy_roles
 
-cp hosts skyway-automation/.
-cd skyway-automation
+cp hosts automation/.
+cd automation
 # It seems we need at least one value in extra_vars, so put a fake one.
 echo "---" > extra_vars.yml
 echo "is_dict: True" >> extra_vars.yml

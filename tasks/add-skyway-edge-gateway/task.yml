@@ -52,12 +52,12 @@ params:
   skyway_bundle_params:
 
 inputs:
-  - name: skyway-pipeline
-  - name: skyway-automation
-  - name: ansible-role-azure-iot
-  - name: ansible-role-azure-edge
-  - name: ansible-aws-greengrass
-  - name: ansible-role-skyway-edge-vm
+  - name: pipeline
+  - name: automation
+  - name: azure-iot
+  - name: azure-edge
+  - name: aws-greengrass
+  - name: edge-vm
 
 run:
   path: skyway-pipeline/tasks/generic-ansible/task.sh

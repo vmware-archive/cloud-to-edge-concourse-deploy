@@ -50,8 +50,8 @@ params:
   skyway_bundle_params:
 
 inputs:
-  - name: skyway-pipeline
-  - name: skyway-automation
+  - name: pipeline
+  - name: automation
 
 run:
-  path: skyway-pipeline/tasks/generic-ansible/task.sh
+  path: pipeline/tasks/generic-ansible/task.sh

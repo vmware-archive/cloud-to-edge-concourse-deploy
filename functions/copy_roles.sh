@@ -12,18 +12,18 @@ function check_copy {
 function copy_roles {
 
   # TODO: make this more elegant and wildcard it.
-  mkdir -p skyway-automation/roles
+  mkdir -p automation/roles
   pushd .
-  cd skyway-automation/roles
-  check_copy ansible-role-azure-iot vmware.azure-iot
-  check_copy ansible-role-azure-edge vmware.azure-edge
-  check_copy ansible-role-skyway-edge-vm vmware.skyway-edge-vm
-  check_copy ansible-aws-greengrass/roles/awscli vmware.awscli
-  check_copy ansible-aws-greengrass/roles/greengrass-init vmware.greengrass-init
-  check_copy ansible-aws-greengrass/roles/greengrass-core vmware.greengrass-core
-  check_copy ansible-aws-greengrass/roles/greengrass-deploy vmware.greengrass-deploy
-  check_copy ansible-aws-greengrass/roles/greengrass-lambda vmware.greengrass-lambda
+  cd automation/roles
+  check_copy azure-iot vmware.azure-iot
+  check_copy azure-edge vmware.azure-edge
+  check_copy edge-vm vmware.skyway-edge-vm
+  check_copy aws-greengrass/roles/awscli vmware.awscli
+  check_copy aws-greengrass/roles/greengrass-init vmware.greengrass-init
+  check_copy aws-greengrass/roles/greengrass-core vmware.greengrass-core
+  check_copy aws-greengrass/roles/greengrass-deploy vmware.greengrass-deploy
+  check_copy aws-greengrass/roles/greengrass-lambda vmware.greengrass-lambda
   cd ..
-  [ -f requirements.yml ] && ansible-galaxy install -r requirements.yml 
+  [ -f requirements.yml ] && ansible-galaxy install -r requirements.yml
   popd
 }

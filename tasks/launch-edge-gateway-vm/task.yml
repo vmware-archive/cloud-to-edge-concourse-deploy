@@ -51,12 +51,12 @@ params:
   skyway_bundle_params:
 
 inputs:
-  - name: skyway-pipeline
-  - name: skyway-automation
-  - name: ansible-role-skyway-edge-vm
+  - name: pipeline
+  - name: automation
+  - name: edge-vm
 
 run:
-  path: skyway-pipeline/tasks/generic-ansible/task.sh
+  path: pipeline/tasks/generic-ansible/task.sh
   args:
     - --host-role
-    - iot-driver=vmware.skyway-edge-vm
+    - iot-driver=vmware.edge-vm
