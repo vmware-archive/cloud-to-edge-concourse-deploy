@@ -24,4 +24,5 @@ echo "Host gitlab.eng.vmware.com" >> ~/.ssh/config
 echo "StrictHostKeyChecking no" >> ~/.ssh/config
 echo "IdentityFile ~/.ssh/id_rsa_gitlab" >> ~/.ssh/config
 echo "### bootstrap end ###" >> ~/.ssh/config
+chmod go-rwx ~/.ssh/config
 EOC

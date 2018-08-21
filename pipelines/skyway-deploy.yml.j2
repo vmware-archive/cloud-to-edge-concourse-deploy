@@ -29,6 +29,7 @@ skyway_params: &skyway-params
   azure_iot_edge_names: ((azure_iot_edge_names))
   aws_access_key: ((aws_access_key))
   aws_secret_key: ((aws_secret_key))
+  aws_region: ((aws_region))
   greengrass_s3_bucket: ((greengrass_s3_bucket))
   skip_s3_uploads: false
   greengrass_group_names: ((greengrass_group_names))
@@ -38,6 +39,7 @@ skyway_params: &skyway-params
   skyway_edges: ((skyway_edges))
   skyway_edge_start: 0
   skyway_edge_end: 0
+  skyway_bundle_params: ((skyway_bundle_params))
 
 {% for range in ranges %}
 skyway_params_{{ range.min }}_{{ range.max }}: &skyway_params_{{ loop.index }}
@@ -58,7 +60,7 @@ groups:
   - add-skyway-edge-gateway-{{ range.min }}-{{ range.max }}
   - skyway-edge-gateway-configure-{{ range.min }}-{{ range.max }}
 {% endfor %}
-  - pipeline-complete-VERSION-46{{ config_version|default("") }}
+  - pipeline-complete-VERSION-47{{ config_version|default("") }}
 
 
 - name: cloud-provider
@@ -76,7 +78,7 @@ groups:
 
 - name: complete
   jobs:
-  - pipeline-complete-VERSION-46{{ config_version|default("") }}
+  - pipeline-complete-VERSION-47{{ config_version|default("") }}
 
 # - name: cleanup
 #   jobs:
@@ -246,7 +248,7 @@ jobs:
     params: *skyway_params_{{ loop.index }}
 {% endfor %}
 
-- name: pipeline-complete-VERSION-46{{ config_version|default("") }}
+- name: pipeline-complete-VERSION-47{{ config_version|default("") }}
   plan:
   - aggregate:
     - get: skyway-pipeline
@@ -258,6 +260,6 @@ jobs:
 {% endfor %}
       trigger: true
 
-  - task: pipeline-complete-VERSION-46{{ config_version|default("") }}
+  - task: pipeline-complete-VERSION-47{{ config_version|default("") }}
     file: skyway-pipeline/tasks/noop/task.yml
     params: *skyway-params
