@@ -41,6 +41,7 @@ params:
   greengrass_device_stub:
   greengrass_device_count:
   greengrass_deploy:
+  skyway_bundle_params:
 
 inputs:
   - name: skyway-pipeline

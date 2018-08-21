@@ -44,6 +44,7 @@ params:
   skyway_edges:
   skyway_edge_start:
   skyway_edge_end:
+  skyway_bundle_params:
 
 inputs:
   - name: skyway-pipeline
