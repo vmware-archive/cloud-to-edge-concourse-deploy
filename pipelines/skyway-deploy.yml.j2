@@ -21,12 +21,14 @@ skyway_params: &skyway-params
   skyway_edge_vm_ssh_pub_key: ((skyway_edge_vm_ssh_pub_key))
   skyway_edge_deploy_size: ((skyway_edge_deploy_size))
   GIT_KEY: ((git_key))
+  azure_iot_enable: ((azure_iot_enable))
   azure_cli_application_id: ((azure_cli_application_id))
   azure_cli_application_key: ((azure_cli_application_key))
   azure_cli_tenant_id: ((azure_cli_tenant_id))
   azure_iot_hub_name: ((azure_iot_hub_name))
   azure_iot_group: ((azure_iot_group))
   azure_iot_edge_names: ((azure_iot_edge_names))
+  aws_greengrass_enable: ((aws_greengrass_enable))
   aws_access_key: ((aws_access_key))
   aws_secret_key: ((aws_secret_key))
   aws_region: ((aws_region))
@@ -52,33 +54,33 @@ groups:
 
 - name: full-deploy
   jobs:
-  - skyway-deploy
-  - cloud-provider-buildout
-  - configure-edge-version
+  - deploy
+  - cloud-build
+  - edge-build
 {% for range in ranges %}
-  - launch-edge-gateway-vm-{{ range.min }}-{{ range.max }}
-  - add-skyway-edge-gateway-{{ range.min }}-{{ range.max }}
-  - skyway-edge-gateway-configure-{{ range.min }}-{{ range.max }}
+  - vm-build-{{ range.min }}-{{ range.max }}
+  - edge-cfg-{{ range.min }}-{{ range.max }}
+  - edge-activate-{{ range.min }}-{{ range.max }}
 {% endfor %}
-  - pipeline-complete-VERSION-50{{ config_version|default("") }}
+  - deploy-finish-VERSION-51{{ config_version|default("") }}
 
 
 - name: cloud-provider
   jobs:
-  - cloud-provider-buildout
-  - configure-edge-version
+  - cloud-build
+  - edge-build
 
 - name: gateways
   jobs:
 {% for range in ranges %}
-  - launch-edge-gateway-vm-{{ range.min }}-{{ range.max }}
-  - add-skyway-edge-gateway-{{ range.min }}-{{ range.max }}
-  - skyway-edge-gateway-configure-{{ range.min }}-{{ range.max }}
+  - vm-build-{{ range.min }}-{{ range.max }}
+  - edge-cfg-{{ range.min }}-{{ range.max }}
+  - edge-activate-{{ range.min }}-{{ range.max }}
 {% endfor %}
 
 - name: complete
   jobs:
-  - pipeline-complete-VERSION-50{{ config_version|default("") }}
+  - deploy-finish-VERSION-51{{ config_version|default("") }}
 
 # - name: cleanup
 #   jobs:
@@ -91,42 +93,42 @@ resource_types:
     repository: pivotalservices/concourse-curl-resource
 
 resources:
-- name: skyway-pipeline
+- name: pipeline
   type: git
   source:
     uri: git@gitlab.com:vmworld2018/skyway-concourse-deploy.git
     branch: master
     private_key: ((git_key))
 
-- name: skyway-automation
+- name: automation
   type: git
   source:
     uri: git@gitlab.com:vmworld2018/skyway-automation
     branch: master
     private_key: ((git_key))
 
-- name: ansible-role-azure-iot
+- name: azure-iot
   type: git
   source:
     uri: git@gitlab.com:vmworld2018/ansible-role-azure-iot
     branch: master
     private_key: ((git_key))
 
-- name: ansible-role-azure-edge
+- name: azure-edge
   type: git
   source:
     uri: git@gitlab.com:vmworld2018/ansible-role-azure-edge
     branch: master
     private_key: ((git_key))
 
-- name: ansible-role-skyway-edge-vm
+- name: edge-vm
   type: git
   source:
     uri: git@gitlab.com:vmworld2018/ansible-role-skyway-edge-vm
     branch: master
     private_key: ((git_key))
 
-- name: ansible-aws-greengrass
+- name: aws-greengrass
   type: git
   source:
     uri: https://github.com/vmware/ansible-aws-greengrass.git
@@ -153,113 +155,113 @@ resources:
 
 jobs:
 
-- name: skyway-deploy
+- name: deploy
   plan:
   - aggregate:
-    - get: skyway-pipeline
-    - get: skyway-automation
+    - get: pipeline
+    - get: automation
     - get: base-ova
     - get: ovftool
-    - get: ansible-aws-greengrass
+    - get: aws-greengrass
 
   - task: install-skyway
-    file: skyway-pipeline/tasks/install-skyway/task.yml
+    file: pipeline/tasks/install-skyway/task.yml
     params: *skyway-params
 
-- name: cloud-provider-buildout
+- name: cloud-build
   plan:
   - aggregate:
-    - get: skyway-pipeline
-    - get: skyway-automation
+    - get: pipeline
+    - get: automation
       params: {globs: []}
-      passed: [skyway-deploy]
+      passed: [deploy]
       trigger: true
-    - get: ansible-role-azure-iot
-    - get: ansible-role-azure-edge
-    - get: ansible-aws-greengrass
+    - get: azure-iot
+    - get: azure-edge
+    - get: aws-greengrass
 
   - task: initialize-cloud-iot
-    file: skyway-pipeline/tasks/initialize-cloud-iot/task.yml
+    file: pipeline/tasks/initialize-cloud-iot/task.yml
     params: *skyway-params
 
-- name: configure-edge-version
+- name: edge-build
   plan:
   - aggregate:
-    - get: skyway-pipeline
-    - get: skyway-automation
+    - get: pipeline
+    - get: automation
       params: {globs: []}
-      passed: [cloud-provider-buildout]
+      passed: [cloud-build]
       trigger: true
-    - get: ansible-role-azure-iot
-    - get: ansible-role-azure-edge
-    - get: ansible-aws-greengrass
+    - get: azure-iot
+    - get: azure-edge
+    - get: aws-greengrass
 
   - task: deploy-edge-version
-    file: skyway-pipeline/tasks/deploy-edge-version/task.yml
+    file: pipeline/tasks/deploy-edge-version/task.yml
     params: *skyway-params
 
 {% for range in ranges %}
-- name: launch-edge-gateway-vm-{{ range.min }}-{{ range.max }}
+- name: vm-build-{{ range.min }}-{{ range.max }}
   plan:
   - aggregate:
-    - get: skyway-pipeline
-    - get: skyway-automation
+    - get: pipeline
+    - get: automation
       params: {globs: []}
-      passed: [configure-edge-version]
+      passed: [edge-build]
       trigger: true
-    - get: ansible-role-skyway-edge-vm
+    - get: edge-vm
 
-  - task: launch-edge-gateway-vm
-    file: skyway-pipeline/tasks/launch-edge-gateway-vm/task.yml
+  - task: vm-build
+    file: pipeline/tasks/launch-edge-gateway-vm/task.yml
     params: *skyway_params_{{ loop.index }}
 
-- name: add-skyway-edge-gateway-{{ range.min }}-{{ range.max }}
+- name: edge-cfg-{{ range.min }}-{{ range.max }}
   plan:
   - aggregate:
-    - get: skyway-pipeline
-    - get: skyway-automation
+    - get: pipeline
+    - get: automation
       params: {globs: []}
-      passed: [launch-edge-gateway-vm-{{ range.min }}-{{ range.max }}]
+      passed: [v-{{ range.min }}-{{ range.max }}]
       trigger: true
-    - get: ansible-role-azure-iot
-    - get: ansible-role-azure-edge
-    - get: ansible-aws-greengrass
-    - get: ansible-role-skyway-edge-vm
+    - get: azure-iot
+    - get: azure-edge
+    - get: aws-greengrass
+    - get: edge-vm
 
   - task: add-skyway-edge-gateway
-    file: skyway-pipeline/tasks/add-skyway-edge-gateway/task.yml
+    file: pipeline/tasks/add-skyway-edge-gateway/task.yml
     params: *skyway_params_{{ loop.index }}
 
-- name: skyway-edge-gateway-configure-{{ range.min }}-{{ range.max }}
+- name: edge-activate-{{ range.min }}-{{ range.max }}
   plan:
   - aggregate:
-    - get: skyway-pipeline
-    - get: skyway-automation
+    - get: pipeline
+    - get: automation
       params: {globs: []}
-      passed: [add-skyway-edge-gateway-{{ range.min }}-{{ range.max }}]
+      passed: [edge-cfg-{{ range.min }}-{{ range.max }}]
       trigger: true
-    - get: ansible-role-azure-iot
-    - get: ansible-role-azure-edge
-    - get: ansible-aws-greengrass
-    - get: ansible-role-skyway-edge-vm
+    - get: azure-iot
+    - get: azure-edge
+    - get: aws-greengrass
+    - get: edge-vm
 
   - task: skyway-edge-gateway-configure
-    file: skyway-pipeline/tasks/edge-gateway-configure/task.yml
+    file: pipeline/tasks/edge-gateway-configure/task.yml
     params: *skyway_params_{{ loop.index }}
 {% endfor %}
 
-- name: pipeline-complete-VERSION-50{{ config_version|default("") }}
+- name: deploy-finish-VERSION-51{{ config_version|default("") }}
   plan:
   - aggregate:
-    - get: skyway-pipeline
-    - get: skyway-automation
+    - get: pipeline
+    - get: automation
       params: {globs: []}
       passed:
 {% for range in ranges %}
-        - skyway-edge-gateway-configure-{{ range.min }}-{{ range.max }}
+        - edge-activate-{{ range.min }}-{{ range.max }}
 {% endfor %}
       trigger: true
 
-  - task: pipeline-complete-VERSION-50{{ config_version|default("") }}
-    file: skyway-pipeline/tasks/noop/task.yml
+  - task: deploy-finish-VERSION-51{{ config_version|default("") }}
+    file: pipeline/tasks/noop/task.yml
     params: *skyway-params

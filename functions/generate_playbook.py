@@ -8,6 +8,20 @@ playbook = "task-playbook.yml"
 hosts = []
 
 def emit_role(host, role, playbook_file):
+    if role.contains("aws") or role.contains("greengrass")
+        try:
+            if (os.environ['aws_greengrass_enable'] not in
+                ['true', 'True', 'yes', '1']):
+                    return
+        except KeyError:
+            pass
+    if role.contains("azure")
+        try:
+            if (os.environ['azure_iot_enable'] not in
+                ['true', 'True', 'yes', '1']):
+                    return
+        except KeyError:
+            pass
     if host not in hosts:
         # Assume hosts are ordered, i.e. no roles assigned to the one host
         # after assigning to a different host.
