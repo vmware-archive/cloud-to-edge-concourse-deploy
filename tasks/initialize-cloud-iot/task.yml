@@ -23,12 +23,14 @@ params:
   skyway_edge_vm_ssh_pub_key:
   skyway_edge_deploy_size:
   GIT_KEY:
+  azure_iot_enable:
   azure_cli_application_id:
   azure_cli_application_key:
   azure_cli_tenant_id:
   azure_iot_hub_name:
   azure_iot_group:
   azure_iot_edge_names:
+  aws_greengrass_enable:
   aws_access_key:
   aws_secret_key:
   aws_region:
