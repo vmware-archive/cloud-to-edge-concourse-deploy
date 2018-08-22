@@ -55,7 +55,7 @@ inputs:
   - name: automation
   - name: azure-iot
   - name: azure-edge
-  - name: ansible-aws-greengrass
+  - name: aws-greengrass
   - name: edge-vm
 
 run:
