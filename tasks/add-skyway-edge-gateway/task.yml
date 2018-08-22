@@ -60,7 +60,7 @@ inputs:
   - name: edge-vm
 
 run:
-  path: skyway-pipeline/tasks/generic-ansible/task.sh
+  path: pipeline/tasks/generic-ansible/task.sh
   args:
     - --host-role
     - azure-driver=huxoll.azure-cli
