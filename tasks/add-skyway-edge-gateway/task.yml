@@ -71,7 +71,7 @@ run:
     - --host-role
     - greengrass-driver=vmware.greengrass-init
     - --host-role
-    - iot-driver=vmware.skyway-edge-vm
+    - iot-driver=vmware.edge-vm
     - --host-role
     - azure-edge=vmware.azure-edge
     - --host-role
