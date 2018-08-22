@@ -7,21 +7,30 @@ import argparse
 playbook = "task-playbook.yml"
 hosts = []
 
+aws_greengrass_enable = False
+azure_iot_enable = False
+truthy = ['true', 'True', 'yes', '1']
+
+try:
+    if os.environ['aws_greengrass_enable'] in truthy:
+        aws_greengrass_enable = True
+except KeyError:
+    pass
+try:
+    if os.environ['azure_iot_enable'] in truthy:
+        azure_iot_enable = True
+except KeyError:
+    pass
+
 def emit_role(host, role, playbook_file):
-    if role.contains("aws") or role.contains("greengrass")
-        try:
-            if (os.environ['aws_greengrass_enable'] not in
-                ['true', 'True', 'yes', '1']):
-                    return
-        except KeyError:
-            pass
-    if role.contains("azure")
-        try:
-            if (os.environ['azure_iot_enable'] not in
-                ['true', 'True', 'yes', '1']):
-                    return
-        except KeyError:
-            pass
+    if "aws" in role or "greengrass" in role:
+        if not aws_greengrass_enable:
+            print ("Omitting role %s, provider not enabled." % role)
+            return
+    if "azure" in role:
+        if not azure_iot_enable:
+            print ("Omitting role %s, provider not enabled." % role)
+            return
     if host not in hosts:
         # Assume hosts are ordered, i.e. no roles assigned to the one host
         # after assigning to a different host.
@@ -38,7 +47,7 @@ def generate_playbook(args=None):
     playbook_file.write("  connection: local\n")
     playbook_file.write("  gather_facts: no\n")
     try:
-        if (os.environ['ENABLE_ANSIBLE_DEBUG'] in ['true', 'True', 'yes', '1']):
+        if os.environ['ENABLE_ANSIBLE_DEBUG'] in truthy:
             # Add a debugging role to display active variables.
             emit_role("localhost", "dumpall", playbook_file)
     except KeyError:
