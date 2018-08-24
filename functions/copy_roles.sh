@@ -15,10 +15,9 @@ function copy_roles {
   mkdir -p automation/roles
   pushd .
   cd automation/roles
-  check_copy azure-iot vmware.azure-iot
-  check_copy azure-edge vmware.azure-edge
+  #check_copy azure-iot vmware.azure-iot
+  #check_copy azure-edge vmware.azure-edge
   check_copy edge-vm vmware.edge-vm
-  check_copy aws-greengrass/roles/awscli vmware.awscli
   check_copy aws-greengrass/roles/greengrass-init vmware.greengrass-init
   check_copy aws-greengrass/roles/greengrass-core vmware.greengrass-core
   check_copy aws-greengrass/roles/greengrass-deploy vmware.greengrass-deploy
