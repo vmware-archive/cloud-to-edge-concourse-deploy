@@ -52,6 +52,7 @@ def generate_vars(args=None):
             emit_var(k, v, group_vars)
         elif re.search("binary_.*", k, re.IGNORECASE):
             emit_var(k, v, group_vars)
+    emit_var("greengrass_wait_for_success", "false", group_vars)
     group_vars.close()
 
 if __name__ == '__main__':

@@ -62,7 +62,7 @@ groups:
   - edge-cfg-{{ range.min }}-{{ range.max }}
   - edge-activate-{{ range.min }}-{{ range.max }}
 {% endfor %}
-  - deploy-finish-VERSION-59{{ config_version|default("") }}
+  - deploy-finish-VERSION-60{{ config_version|default("") }}
 
 - name: cloud-provider
   jobs:
@@ -79,7 +79,7 @@ groups:
 
 - name: complete
   jobs:
-  - deploy-finish-VERSION-59{{ config_version|default("") }}
+  - deploy-finish-VERSION-60{{ config_version|default("") }}
 
 # - name: cleanup
 #   jobs:
@@ -249,7 +249,7 @@ jobs:
     params: *skyway_params_{{ loop.index }}
 {% endfor %}
 
-- name: deploy-finish-VERSION-59{{ config_version|default("") }}
+- name: deploy-finish-VERSION-60{{ config_version|default("") }}
   plan:
   - aggregate:
     - get: pipeline
@@ -261,6 +261,6 @@ jobs:
 {% endfor %}
       trigger: true
 
-  - task: deploy-finish-VERSION-59{{ config_version|default("") }}
+  - task: deploy-finish-VERSION-60{{ config_version|default("") }}
     file: pipeline/tasks/noop/task.yml
     params: *skyway-params
