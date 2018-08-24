@@ -54,8 +54,8 @@ params:
 inputs:
   - name: pipeline
   - name: automation
-  - name: azure-iot
-  - name: azure-edge
+#  - name: azure-iot
+#  - name: azure-edge
   - name: aws-greengrass
   - name: edge-vm
 

@@ -62,7 +62,7 @@ groups:
   - edge-cfg-{{ range.min }}-{{ range.max }}
   - edge-activate-{{ range.min }}-{{ range.max }}
 {% endfor %}
-  - deploy-finish-VERSION-60{{ config_version|default("") }}
+  - deploy-finish-VERSION-61{{ config_version|default("") }}
 
 - name: cloud-provider
   jobs:
@@ -79,7 +79,7 @@ groups:
 
 - name: complete
   jobs:
-  - deploy-finish-VERSION-60{{ config_version|default("") }}
+  - deploy-finish-VERSION-61{{ config_version|default("") }}
 
 # - name: cleanup
 #   jobs:
@@ -106,14 +106,14 @@ resources:
     branch: master
     private_key: ((git_key))
 
-- name: azure-iot
+- name: provider2-iot
   type: git
   source:
     uri: git@gitlab.com:vmworld2018/ansible-role-azure-iot
     branch: master
     private_key: ((git_key))
 
-- name: azure-edge
+- name: provider2-edge
   type: git
   source:
     uri: git@gitlab.com:vmworld2018/ansible-role-azure-edge
@@ -175,8 +175,8 @@ jobs:
       params: {globs: []}
       passed: [deploy]
       trigger: true
-    - get: azure-iot
-    - get: azure-edge
+    - get: provider2-iot
+    - get: provider2-edge
     - get: aws-greengrass
 
   - task: initialize-cloud-iot
@@ -191,8 +191,8 @@ jobs:
       params: {globs: []}
       passed: [cloud-build]
       trigger: true
-    - get: azure-iot
-    - get: azure-edge
+    - get: provider2-iot
+    - get: provider2-edge
     - get: aws-greengrass
 
   - task: deploy-edge-version
@@ -222,8 +222,8 @@ jobs:
       params: {globs: []}
       passed: [vm-build-{{ range.min }}-{{ range.max }}]
       trigger: true
-    - get: azure-iot
-    - get: azure-edge
+    - get: provider2-iot
+    - get: provider2-edge
     - get: aws-greengrass
     - get: edge-vm
 
@@ -239,8 +239,8 @@ jobs:
       params: {globs: []}
       passed: [edge-cfg-{{ range.min }}-{{ range.max }}]
       trigger: true
-    - get: azure-iot
-    - get: azure-edge
+    - get: provider2-iot
+    - get: provider2-edge
     - get: aws-greengrass
     - get: edge-vm
 
@@ -249,7 +249,7 @@ jobs:
     params: *skyway_params_{{ loop.index }}
 {% endfor %}
 
-- name: deploy-finish-VERSION-60{{ config_version|default("") }}
+- name: deploy-finish-VERSION-61{{ config_version|default("") }}
   plan:
   - aggregate:
     - get: pipeline
@@ -261,6 +261,6 @@ jobs:
 {% endfor %}
       trigger: true
 
-  - task: deploy-finish-VERSION-60{{ config_version|default("") }}
+  - task: deploy-finish-VERSION-61{{ config_version|default("") }}
     file: pipeline/tasks/noop/task.yml
     params: *skyway-params

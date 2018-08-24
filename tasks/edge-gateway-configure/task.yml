@@ -53,16 +53,16 @@ params:
 inputs:
   - name: pipeline
   - name: automation
-  - name: azure-iot
-  - name: azure-edge
+#  - name: azure-iot
+#  - name: azure-edge
   - name: aws-greengrass
   - name: edge-vm
 
 run:
   path: pipeline/tasks/generic-ansible/task.sh
   args:
-    - --host-role
-    - azure-driver=huxoll.azure-cli
+#    - --host-role
+#    - azure-driver=huxoll.azure-cli
     - --host-role
     - greengrass-driver=vmware.awscli
     - --host-role

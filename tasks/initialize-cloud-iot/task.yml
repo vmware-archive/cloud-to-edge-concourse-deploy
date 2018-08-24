@@ -45,7 +45,7 @@ params:
 inputs:
   - name: pipeline
   - name: automation
-  - name: azure-iot
+#  - name: azure-iot
   - name: aws-greengrass
 
 run:
