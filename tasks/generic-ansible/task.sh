@@ -42,5 +42,15 @@ end=`date +%s`
 echo "Finished in $((($(date +%s)-$start)/60)) minutes."
 echo ""
 
+if [ -d ../scratch-out ]; then
+  cd ..
+  git clone scratch scratch-out
+  cp automation/my-env scratch-out/task-env
+  cp automation/my-args scratch-out/task-args
+  cd scratch-out
+  echo "Finished in $((($(date +%s)-$start)/60)) minutes." >> timings
+  git add .
+  git commit -m "Task completed."
+fi
 
 exit $STATUS
