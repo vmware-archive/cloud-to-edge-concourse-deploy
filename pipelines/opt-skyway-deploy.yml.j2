@@ -175,6 +175,8 @@ jobs:
     file: pipeline/tasks/install-skyway/task.yml
     params: *skyway-params
   - put: scratch
+    params:
+      repository: scratch-out
 
 - name: cloud-build
   plan:
