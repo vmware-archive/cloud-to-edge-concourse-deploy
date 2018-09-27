@@ -49,8 +49,8 @@ def generate_playbook(args=None):
     try:
         if os.environ['ENABLE_ANSIBLE_DEBUG'] in truthy:
             # Add a debugging role to display active variables.
-            print (">> localhost=iot_debug")
-            emit_role("localhost", "iot_debug", playbook_file)
+            print (">> localhost=vmware.iot_debug")
+            emit_role("localhost", "vmware.iot_debug", playbook_file)
     except KeyError:
         pass
     if not args:
