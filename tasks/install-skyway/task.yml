@@ -60,5 +60,4 @@ run:
     - greengrass-driver=vmware.awscli
     - --die
 outputs:
-  - name: automation
-  - name: scratch
+  - name: scratch-out
