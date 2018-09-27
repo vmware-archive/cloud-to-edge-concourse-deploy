@@ -57,3 +57,4 @@ run:
     - azure-driver=huxoll.azure-cli
     - --host-role
     - greengrass-driver=vmware.awscli
+    - --die

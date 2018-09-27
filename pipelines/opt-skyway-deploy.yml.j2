@@ -152,6 +152,13 @@ resources:
     filename: ((ovftool_image))
     skip_ssl_verification: true
 
+- name: scratch
+  type: git
+  source:
+    uri: git@gitlab.com:vmworld2018/scratch-resource.git
+    branch: master
+    private_key: ((git_key))
+
 jobs:
 
 - name: deploy
@@ -162,10 +169,12 @@ jobs:
     - get: base-ova
     - get: ovftool
     - get: aws-greengrass
+    - get: scratch
 
   - task: install-skyway
     file: pipeline/tasks/install-skyway/task.yml
     params: *skyway-params
+  - put: scratch
 
 - name: cloud-build
   plan:
