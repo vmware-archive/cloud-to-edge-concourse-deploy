@@ -50,6 +50,7 @@ inputs:
   - name: pipeline
   - name: automation
   - name: aws-greengrass
+  - name: scratch
 run:
   path: pipeline/tasks/generic-ansible/task.sh
   args:
@@ -58,3 +59,6 @@ run:
     - --host-role
     - greengrass-driver=vmware.awscli
     - --die
+outputs:
+  - name: automation
+  - name: scratch
