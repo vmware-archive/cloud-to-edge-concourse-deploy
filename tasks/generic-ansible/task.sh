@@ -44,6 +44,7 @@ echo ""
 
 if [ -d ../scratch-out ]; then
   cd ..
+  git --version || (apt-get update -qq && apt-get install -y git)
   git clone scratch scratch-out
   cp automation/my-env scratch-out/task-env
   cp automation/my-args scratch-out/task-args
