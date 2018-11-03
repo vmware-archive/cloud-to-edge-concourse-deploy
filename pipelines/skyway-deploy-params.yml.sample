@@ -1,0 +1,205 @@
+# set value to true for verbose output from ansible
+enable_ansible_debug: false
+# Set to name of installer or env or any value so resources can be identified
+skyway_installer: skyway-concourse
+
+# This is a key with access to download private repos
+git_key: |
+  -----BEGIN RSA PRIVATE KEY-----
+  MIIEpAIBAAKCAQEA0p9crSf1c5JBjpe5eoXJFjllFOJdT0X1/TrLM3xA+v+/QT/s
+  JdYf+dsE/wv1pJ6LI2MWJS21SPxZbeXV4wtRLpQ0KQungSVNqRmgOpU01EOH21zR
+  Jy491QavESX+qrj2vJLBoOeMlQPxAHG4sAkpNFCRCmtS1VvxOy2AuughwdLJOw2/
+  CVuU2KmOQ0kYi3qRRha85575yw9VqLJm+RR/LEKxZzKiRU6qWVFHQ4zlYwI7My4U
+  rfrKXFHLVbinzbnYj6SZINnplRH2qurqY5tngVebG4hL9htflPw1eF4uy+b2ItEx
+  9qIiFoXQXu2B8QE/lI9Zd+iHyGiqoExMso2ARQIDAQABAoIBACd+jIFHqeX2+eYE
+  G1qXNaK+Nm8ZF0gjJUJLwQixdvnZ9QIGO4DIywwt/pzYoEIzHIIRNXjZPlImR5qs
+  61N8rsdeMP21Wr6DwTFBReNWUSawVwxSNkHzkNKeQzui9UMMFfA8UKScZqcWqx1b
+  NbeEsD5IETpz739kkzJ2kNn7Z0ERr2Tr9KbK2/tGfwYGU3HkUjc8FUKOd20FmAIX
+  pW20XIb5nEvSMlCaBKlO+IE7s4TdV3QFNaZYoHd8c09/5AUj3ihTizLP88Xquoft
+  TYJqngTIHqaFujoo/bfWWMo9MyTfZSSktzNvrOjm2RBdzx9EUkAVJPs7x8dBL+gA
+  AHAxQOECgYEA6xrQPFaJVFDhzDCQnEIaalX0V41RiEpprf7hd1+UrS8/kshkMGsF
+  756Q7B82zfN/zPgqEYYiTj3/8eT/yzJUCIMlzrrWDdSDAzQXondjWgTwqmE8iUYg
+  aAL3jZakSIn8bNUpABqnOGURqqNXh251TUrDoSKofJ/vlwvj+dLEW4kCgYEA5VeF
+  KNC0PQcijpZZNm8AnbAHeJvS3tEZNRiLI5vg5BAspvmp7I4jNMZ3aFL5WrBsfP4c
+  ab1pOhnCYtjK9CATpYGt8UijqqJHkpADpJZz1JYgVTocalfA+W2PvE4tByYtkn1C
+  n3ji+Fi8nxKU1+2HWkrO7UIhtmS4AWkfDLrg490CgYAIAN6r3ypHo4U8RT73As0R
+  Z6GsxVPMNvRIBxA31xohlyUr4wR+HXaTRKucTie4dRyZpq0P8agDT9sBqhEHIsx3
+  ibdkxTl6OQzItCJF1picPOTQeATui2OZBtjUihdHnOLp9YuyxDWDFvW2AF9/bcQy
+  gGQOfTaNH4ixdKcrHwCuOQKBgQCoKGz9iVGusa2X6QuOywMjm+9OcsrCD4UxFkbn
+  HCNgda+X2tXKGkocJy1kc/pbkaJqX5QLwBMIw9xwx87AA0kEgLo+gWln8scR4sCZ
+  DKvvgwhAFXTCUIexG7FZe+SuKkMd9vRDo8qgF8htxp0WWhZ1kQZ6lpPLfbwhZKec
+  mOXOjQKBgQDBw3rzR3VI+KJ/s2ecp87ubQfqrJ561Ivi/AR1hrbF53gwYOfEGaAY
+  o1wSywClqrvRFgpyQ+oBjbBehzLfL8cHEfZe7y0Uf1JnrZu0GyBLWgdPaSNMO0FL
+  DXjXUYmXDNh43f4gwhqq8DGGZ/JSgzu1yrTWQ2FmlhTUgiAhBiQb+Q==
+  -----END RSA PRIVATE KEY-----
+
+# OVA general network settings
+ntpservers: 10.13.12.2                    # EDIT
+dnsserver: 10.13.12.2                     # EDIT
+dnsdomain: corp.local.io                  # EDIT
+defaultgateway: 10.13.12.1                # EDIT
+netmask: 255.255.255.0                    # EDIT
+
+# Host a Webserver to serve the ova images and ovftool
+# Please edit the endpoint and the file names
+binary_webserver: http://10.sample.ip.100:8080
+
+# Download base ova, e.g.
+# https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64.ova
+base_ova: xenial-server-cloudimg-amd64.ova
+
+# Ensure ovftool is minimally v4.2
+# https://my.vmware.com/group/vmware/details?productId=614&downloadGroup=OVFTOOL420#
+ovftool_image: VMware-ovftool-4.3.0-7948156-lin.x86_64.bundle
+
+# Stub for edge VM names: will become [edge_vm_basename]-[edge_group]
+skyway_edge_vm_basename: edgevm
+# Default credentials to add to Edge VMs
+skyway_edge_vm_user: edgevm
+skyway_edge_vm_password: skyway-passZ!
+
+# Private key for connecting to Edge VMs.  If set, should correspond to the 
+# pub key below
+skyway_edge_vm_ssh_priv_key: |
+  -----BEGIN RSA PRIVATE KEY-----
+  MIIEpAIBAAKCAQEA0p9crSf1c5JBjpe5eoXJFjllFOJdT0X1/TrLM3xA+v+/QT/s
+  JdYf+dsE/wv1pJ6LI2MWJS21SPxZbeXV4wtRLpQ0KQungSVNqRmgOpU01EOH21zR
+  Jy491QavESX+qrj2vJLBoOeMlQPxAHG4sAkpNFCRCmtS1VvxOy2AuughwdLJOw2/
+  CVuU2KmOQ0kYi3qRRha85575yw9VqLJm+RR/LEKxZzKiRU6qWVFHQ4zlYwI7My4U
+  rfrKXFHLVbinzbnYj6SZINnplRH2qurqY5tngVebG4hL9htflPw1eF4uy+b2ItEx
+  9qIiFoXQXu2B8QE/lI9Zd+iHyGiqoExMso2ARQIDAQABAoIBACd+jIFHqeX2+eYE
+  G1qXNaK+Nm8ZF0gjJUJLwQixdvnZ9QIGO4DIywwt/pzYoEIzHIIRNXjZPlImR5qs
+  61N8rsdeMP21Wr6DwTFBReNWUSawVwxSNkHzkNKeQzui9UMMFfA8UKScZqcWqx1b
+  NbeEsD5IETpz739kkzJ2kNn7Z0ERr2Tr9KbK2/tGfwYGU3HkUjc8FUKOd20FmAIX
+  pW20XIb5nEvSMlCaBKlO+IE7s4TdV3QFNaZYoHd8c09/5AUj3ihTizLP88Xquoft
+  TYJqngTIHqaFujoo/bfWWMo9MyTfZSSktzNvrOjm2RBdzx9EUkAVJPs7x8dBL+gA
+  AHAxQOECgYEA6xrQPFaJVFDhzDCQnEIaalX0V41RiEpprf7hd1+UrS8/kshkMGsF
+  756Q7B82zfN/zPgqEYYiTj3/8eT/yzJUCIMlzrrWDdSDAzQXondjWgTwqmE8iUYg
+  aAL3jZakSIn8bNUpABqnOGURqqNXh251TUrDoSKofJ/vlwvj+dLEW4kCgYEA5VeF
+  KNC0PQcijpZZNm8AnbAHeJvS3tEZNRiLI5vg5BAspvmp7I4jNMZ3aFL5WrBsfP4c
+  ab1pOhnCYtjK9CATpYGt8UijqqJHkpADpJZz1JYgVTocalfA+W2PvE4tByYtkn1C
+  n3ji+Fi8nxKU1+2HWkrO7UIhtmS4AWkfDLrg490CgYAIAN6r3ypHo4U8RT73As0R
+  Z6GsxVPMNvRIBxA31xohlyUr4wR+HXaTRKucTie4dRyZpq0P8agDT9sBqhEHIsx3
+  ibdkxTl6OQzItCJF1picPOTQeATui2OZBtjUihdHnOLp9YuyxDWDFvW2AF9/bcQy
+  gGQOfTaNH4ixdKcrHwCuOQKBgQCoKGz9iVGusa2X6QuOywMjm+9OcsrCD4UxFkbn
+  HCNgda+X2tXKGkocJy1kc/pbkaJqX5QLwBMIw9xwx87AA0kEgLo+gWln8scR4sCZ
+  DKvvgwhAFXTCUIexG7FZe+SuKkMd9vRDo8qgF8htxp0WWhZ1kQZ6lpPLfbwhZKec
+  mOXOjQKBgQDBw3rzR3VI+KJ/s2ecp87ubQfqrJ561Ivi/AR1hrbF53gwYOfEGaAY
+  o1wSywClqrvRFgpyQ+oBjbBehzLfL8cHEfZe7y0Uf1JnrZu0GyBLWgdPaSNMO0FL
+  DXjXUYmXDNh43f4gwhqq8DGGZ/JSgzu1yrTWQ2FmlhTUgiAhBiQb+Q==
+  -----END RSA PRIVATE KEY-----
+
+# Key to be deposited on created VMs for access.
+# Automation should have access to a corresponding private key.
+skyway_edge_vm_ssh_pub_key: |
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCX/adFOoYeKAcD81EogrCj5/2FsmJD2i/5geS
+  eGvQZkPmpz54ro5xem6hu4kZaqG3Ej5HGdvZkcNRCK8bTcoRtqHS+uNxfBVAXwgf9G9De8A2wi+
+  R8iugGbTyIEthHcgC4DruE9oGLry8U3NjWwIy0VUDR7xKkjYRe7HAr/UdXI3FYl59KGtOJdbOzI
+  XoNQsY9OTgXgTaKCcFoI0y11MQrbqK+twcjz3ItyhecI8xxwHBcZnAomUFIuS8BeFaiUAj7HtMm
+  Fpc3+plSOiODPI8rPhm5pBiq5FiVrLfjEaBx/1frXuMQ3eaQaQiWzfW8PDVVhnK7650tDg9yjx+
+  bIFop nobody@this-is-a-placeholder-key.com
+
+# For each Edge, define the vCenter/VM settings
+skyway_edges:
+  - edge_group: mygroup-1
+    vcenter_host:         # EDIT - Specific vCenter for this Edge
+    vcenter_usr:          # EDIT - Specific vCenter for this Edge
+    vcenter_pwd:          # EDIT - Specific vCenter for this Edge
+    vcenter_datacenter:   # EDIT - Specific vCenter for this Edge
+    vcenter_datastore:    # EDIT - Specific vCenter for this Edge
+    vcenter_cluster:      # EDIT - Specific vCenter for this Edge
+    vcenter_rp:           # EDIT - Specific vCenter for this Edge
+  - edge_group: mygroup-2
+    vcenter_host:         # EDIT - Specific vCenter for this Edge
+    vcenter_usr:          # EDIT - Specific vCenter for this Edge
+    vcenter_pwd:          # EDIT - Specific vCenter for this Edge
+    vcenter_datacenter:   # EDIT - Specific vCenter for this Edge
+    vcenter_datastore:    # EDIT - Specific vCenter for this Edge
+    vcenter_cluster:      # EDIT - Specific vCenter for this Edge
+    vcenter_rp:           # EDIT - Specific vCenter for this Edge
+  - edge_group: mygroup-3
+    vcenter_host:         # EDIT - Specific vCenter for this Edge
+    vcenter_usr:          # EDIT - Specific vCenter for this Edge
+    vcenter_pwd:          # EDIT - Specific vCenter for this Edge
+    vcenter_datacenter:   # EDIT - Specific vCenter for this Edge
+    vcenter_datastore:    # EDIT - Specific vCenter for this Edge
+    vcenter_cluster:      # EDIT - Specific vCenter for this Edge
+    vcenter_rp:           # EDIT - Specific vCenter for this Edge
+  - edge_group: mygroup-4
+    vcenter_host:         # EDIT - Specific vCenter for this Edge
+    vcenter_usr:          # EDIT - Specific vCenter for this Edge
+    vcenter_pwd:          # EDIT - Specific vCenter for this Edge
+    vcenter_datacenter:   # EDIT - Specific vCenter for this Edge
+    vcenter_datastore:    # EDIT - Specific vCenter for this Edge
+    vcenter_cluster:      # EDIT - Specific vCenter for this Edge
+    vcenter_rp:           # EDIT - Specific vCenter for this Edge
+  - edge_group: mygroup-5
+    vcenter_host:         # EDIT - Specific vCenter for this Edge
+    vcenter_usr:          # EDIT - Specific vCenter for this Edge
+    vcenter_pwd:          # EDIT - Specific vCenter for this Edge
+    vcenter_datacenter:   # EDIT - Specific vCenter for this Edge
+    vcenter_datastore:    # EDIT - Specific vCenter for this Edge
+    vcenter_cluster:      # EDIT - Specific vCenter for this Edge
+    vcenter_rp:           # EDIT - Specific vCenter for this Edge
+
+# Default Sizing of Skyway Edge VMs
+# small  : 2 vCPU,  4GB RAM
+# medium : 4 vCPU,  8GB RAM
+# large  : 8 vCPU, 16GB RAM
+
+# Change default size for deployment for edge VMs
+skyway_edge_deploy_size: small
+
+# ===== Azure IoT Settings =====
+# Azure auth settings
+azure_cli_application_id: FIXME
+azure_cli_application_key: FIXME
+azure_cli_tenant_id: FIXME
+
+# Name of the IoT hub
+azure_iot_hub_name: ci-iot-hub
+
+# Group to contain the IoT resources (will be created).
+azure_iot_group: ci-iot-group
+
+# Names for the Edges to be created.
+azure_iot_edge_names:
+  - mygroup-1
+  - mygroup-4
+  - mygroup-5
+
+# ===== AWS Greengrass Settings =====
+# AWS auth settings
+aws_access_key: FIXME
+aws_secret_key: FIXME
+
+# AWS Greengrass settings
+# This S3 bucket is used to store credentials, lambda code, etc.
+greengrass_s3_bucket: greengrass-items
+
+# Greengrass groups to create.  A matching core will be created for each group,
+# and deployed to a target host, if a host in the inventory has a matching Core
+# ID.  For example, a host with a host variable
+# greengrass_core_id='mygroup-1_Core'
+# would receive a deployment of the first group in this list below.
+greengrass_group_names:
+  - mygroup-1
+  - mygroup-2
+  - mygroup-3
+
+# The role will create devices of the form {greengrass_device_stub}N, where N
+# is between 1 and greengrass_device_count.
+# These can be left undefined if no devices should be mass-created this way.
+greengrass_device_stub: my-device
+greengrass_device_count: 1
+
+# This drives deployments of groups/cores, since it's not always clear when a
+# new deployment should occur.  It only makes sense to set either deploy or
+# redeploy.  A group may have neither set if it has not changed.
+greengrass_deploy:
+  mygroup-1:
+    redeploy: false
+    deploy: true
+  mygroup-2:
+    redeploy: false
+    deploy: false

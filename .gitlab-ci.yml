@@ -1,0 +1,25 @@
+---
+image: williamyeh/ansible:ubuntu16.04
+
+before_script:
+  - apt-get update -qq
+  - apt-get install -y git
+  - mkdir ~/.ssh
+  - chmod 700 ~/.ssh
+  - echo "$GITLAB_SSH_KEY" | tr -d '\r' >> ~/.ssh/id_rsa_gitlab
+  - chmod go-rwx ~/.ssh/id_rsa_gitlab
+  - echo "Host *" >> ~/.ssh/config
+  - echo "StrictHostKeyChecking no" >> ~/.ssh/config
+  - echo "IdentityFile ~/.ssh/id_rsa_gitlab" >> ~/.ssh/config
+# Following line takes place of galaxy-install -r requirements.yml
+# Since that file lives in another repo.
+  - ansible-galaxy install huxoll.azure-cli
+
+test_additional_roles:
+  script:
+    - ansible-galaxy install -r bootstrap/provision/additional_roles.yml -v -v
+
+test_generic_task:
+  script:
+    - cd tasks/generic-ansible
+    - ./task.sh --host-role localhost=huxoll.azure-cli
