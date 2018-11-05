@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright © 2018 VMware, Inc. All Rights Reserved.
+# SPDX-License-Identifier: MIT
 
 echo
 echo "Setting up user $user at host $ip to connect to Gitlab"
