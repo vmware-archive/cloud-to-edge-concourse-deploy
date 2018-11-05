@@ -46,7 +46,7 @@ if [ -d ../scratch-out ]; then
   cd ..
   git --version || (apt-get update -qq && apt-get install -y git)
   git config --global user.email "nobody@vmware.com"
-  git config --global user.name "Skyway Pipeline"
+  git config --global user.name "C2E Pipeline"
   git clone scratch scratch-out
   cp automation/my-env scratch-out/task-env
   cp automation/my-args scratch-out/task-args

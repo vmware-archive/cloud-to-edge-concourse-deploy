@@ -4,4 +4,4 @@
 ansible.cfg
 hosts
 task-playbook.yml
-skyway-automation
+cloud-to-edge-automation

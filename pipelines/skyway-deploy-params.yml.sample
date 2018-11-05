@@ -1,7 +1,7 @@
 # set value to true for verbose output from ansible
 enable_ansible_debug: false
 # Set to name of installer or env or any value so resources can be identified
-skyway_installer: skyway-concourse
+c2e_installer: cloud-to-edge-concourse
 
 # This is a key with access to download private repos
 git_key: |
@@ -53,14 +53,14 @@ base_ova: xenial-server-cloudimg-amd64.ova
 ovftool_image: VMware-ovftool-4.3.0-7948156-lin.x86_64.bundle
 
 # Stub for edge VM names: will become [edge_vm_basename]-[edge_group]
-skyway_edge_vm_basename: edgevm
+c2e_edge_vm_basename: edgevm
 # Default credentials to add to Edge VMs
-skyway_edge_vm_user: edgevm
-skyway_edge_vm_password: skyway-passZ!
+c2e_edge_vm_user: edgevm
+c2e_edge_vm_password: c2e-passZ!
 
 # Private key for connecting to Edge VMs.  If set, should correspond to the 
 # pub key below
-skyway_edge_vm_ssh_priv_key: |
+c2e_edge_vm_ssh_priv_key: |
   -----BEGIN RSA PRIVATE KEY-----
   MIIEpAIBAAKCAQEA0p9crSf1c5JBjpe5eoXJFjllFOJdT0X1/TrLM3xA+v+/QT/s
   JdYf+dsE/wv1pJ6LI2MWJS21SPxZbeXV4wtRLpQ0KQungSVNqRmgOpU01EOH21zR
@@ -91,7 +91,7 @@ skyway_edge_vm_ssh_priv_key: |
 
 # Key to be deposited on created VMs for access.
 # Automation should have access to a corresponding private key.
-skyway_edge_vm_ssh_pub_key: |
+c2e_edge_vm_ssh_pub_key: |
   ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCX/adFOoYeKAcD81EogrCj5/2FsmJD2i/5geS
   eGvQZkPmpz54ro5xem6hu4kZaqG3Ej5HGdvZkcNRCK8bTcoRtqHS+uNxfBVAXwgf9G9De8A2wi+
   R8iugGbTyIEthHcgC4DruE9oGLry8U3NjWwIy0VUDR7xKkjYRe7HAr/UdXI3FYl59KGtOJdbOzI
@@ -100,7 +100,7 @@ skyway_edge_vm_ssh_pub_key: |
   bIFop nobody@this-is-a-placeholder-key.com
 
 # For each Edge, define the vCenter/VM settings
-skyway_edges:
+c2e_edges:
   - edge_group: mygroup-1
     vcenter_host:         # EDIT - Specific vCenter for this Edge
     vcenter_usr:          # EDIT - Specific vCenter for this Edge
@@ -142,13 +142,13 @@ skyway_edges:
     vcenter_cluster:      # EDIT - Specific vCenter for this Edge
     vcenter_rp:           # EDIT - Specific vCenter for this Edge
 
-# Default Sizing of Skyway Edge VMs
+# Default Sizing of C2E Edge VMs
 # small  : 2 vCPU,  4GB RAM
 # medium : 4 vCPU,  8GB RAM
 # large  : 8 vCPU, 16GB RAM
 
 # Change default size for deployment for edge VMs
-skyway_edge_deploy_size: small
+c2e_edge_deploy_size: small
 
 # ===== Azure IoT Settings =====
 # Azure auth settings

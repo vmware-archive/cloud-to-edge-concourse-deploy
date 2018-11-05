@@ -1,8 +1,8 @@
 ---
-# Use reference instead of repeating the skyway params
-skyway_params: &skyway-params
+# Use reference instead of repeating the cloud-to-edge params
+c2e_params: &cloud-to-edge-params
   ENABLE_ANSIBLE_DEBUG: ((enable_ansible_debug))
-  SKYWAY_INSTALLER: ((skyway_installer))
+  C2E_INSTALLER: ((c2e_installer))
   NTPSERVERS: ((ntpservers))
   DNSSERVER: ((dnsserver))
   DNSDOMAIN: ((dnsdomain))
@@ -13,13 +13,13 @@ skyway_params: &skyway-params
   base_ova_name_arm: ((base_ova_name_arm))
   base_ova_origin: ((binary_webserver))/((base_ova_name))
   base_ova_origin_arm: ((binary_webserver))/((base_ova_name_arm))
-  skyway_edge_vm_basename: ((skyway_edge_vm_basename))
-  skyway_edge_vm_user: ((skyway_edge_vm_user))
-  skyway_edge_vm_password: ((skyway_edge_vm_password))
-  skyway_edge_vm_network: ((skyway_edge_vm_network))
-  skyway_edge_vm_ssh_priv_key: ((skyway_edge_vm_ssh_priv_key))
-  skyway_edge_vm_ssh_pub_key: ((skyway_edge_vm_ssh_pub_key))
-  skyway_edge_deploy_size: ((skyway_edge_deploy_size))
+  c2e_edge_vm_basename: ((c2e_edge_vm_basename))
+  c2e_edge_vm_user: ((c2e_edge_vm_user))
+  c2e_edge_vm_password: ((c2e_edge_vm_password))
+  c2e_edge_vm_network: ((c2e_edge_vm_network))
+  c2e_edge_vm_ssh_priv_key: ((c2e_edge_vm_ssh_priv_key))
+  c2e_edge_vm_ssh_pub_key: ((c2e_edge_vm_ssh_pub_key))
+  c2e_edge_deploy_size: ((c2e_edge_deploy_size))
   GIT_KEY: ((git_key))
   azure_iot_enable: ((azure_iot_enable))
   azure_cli_application_id: ((azure_cli_application_id))
@@ -38,16 +38,16 @@ skyway_params: &skyway-params
   greengrass_device_stub: ((greengrass_device_stub))
   greengrass_device_count: ((greengrass_device_count))
   greengrass_deploy: ((greengrass_deploy))
-  skyway_edges: ((skyway_edges))
-  skyway_edge_start: 0
-  skyway_edge_end: 0
-  skyway_bundle_params: ((skyway_bundle_params))
+  c2e_edges: ((c2e_edges))
+  c2e_edge_start: 0
+  c2e_edge_end: 0
+  c2e_bundle_params: ((c2e_bundle_params))
 
 {% for range in ranges %}
-skyway_params_{{ range.min }}_{{ range.max }}: &skyway_params_{{ loop.index }}
-  <<: *skyway-params
-  skyway_edge_start: {{ range.min }}
-  skyway_edge_end: {{ range.max }}
+c2e_params_{{ range.min }}_{{ range.max }}: &c2e_params_{{ loop.index }}
+  <<: *cloud-to-edge-params
+  c2e_edge_start: {{ range.min }}
+  c2e_edge_end: {{ range.max }}
 {% endfor %}
 
 groups:
@@ -83,7 +83,7 @@ groups:
 
 # - name: cleanup
 #   jobs:
-#   - uninstall-skyway
+#   - uninstall-cloud-to-edge
 
 resource_types:
 - name: file-url
@@ -95,35 +95,35 @@ resources:
 - name: pipeline
   type: git
   source:
-    uri: git@gitlab.com:vmworld2018/skyway-concourse-deploy.git
+    uri: git@github.com:vmware/cloud-to-edge-concourse-deploy.git
     branch: master
     private_key: ((git_key))
 
 - name: automation
   type: git
   source:
-    uri: git@gitlab.com:vmworld2018/skyway-automation
+    uri: git@github.com:vmware/cloud-to-edge-automation
     branch: master
     private_key: ((git_key))
 
 - name: provider2-iot
   type: git
   source:
-    uri: git@gitlab.com:vmworld2018/ansible-role-azure-iot
+    uri: git@github.com:vmware/ansible-role-azure-iot
     branch: master
     private_key: ((git_key))
 
 - name: provider2-edge
   type: git
   source:
-    uri: git@gitlab.com:vmworld2018/ansible-role-azure-edge
+    uri: git@github.com:vmware/ansible-role-azure-edge
     branch: master
     private_key: ((git_key))
 
 - name: edge-vm
   type: git
   source:
-    uri: git@gitlab.com:vmworld2018/ansible-role-skyway-edge-vm
+    uri: git@github.com:vmware/ansible-role-cloud-to-edge-vm
     branch: master
     private_key: ((git_key))
 
@@ -163,9 +163,9 @@ jobs:
     - get: ovftool
     - get: aws-greengrass
 
-  - task: install-skyway
-    file: pipeline/tasks/install-skyway/task.yml
-    params: *skyway-params
+  - task: install-cloud-to-edge
+    file: pipeline/tasks/install-cloud-to-edge/task.yml
+    params: *cloud-to-edge-params
 
 - name: cloud-build
   plan:
@@ -181,7 +181,7 @@ jobs:
 
   - task: initialize-cloud-iot
     file: pipeline/tasks/initialize-cloud-iot/task.yml
-    params: *skyway-params
+    params: *cloud-to-edge-params
 
 - name: edge-build
   plan:
@@ -197,7 +197,7 @@ jobs:
 
   - task: deploy-edge-version
     file: pipeline/tasks/deploy-edge-version/task.yml
-    params: *skyway-params
+    params: *cloud-to-edge-params
 
 {% for range in ranges %}
 - name: vm-build-{{ range.min }}-{{ range.max }}
@@ -212,7 +212,7 @@ jobs:
 
   - task: vm-build
     file: pipeline/tasks/launch-edge-gateway-vm/task.yml
-    params: *skyway_params_{{ loop.index }}
+    params: *c2e_params_{{ loop.index }}
 
 - name: edge-cfg-{{ range.min }}-{{ range.max }}
   plan:
@@ -227,9 +227,9 @@ jobs:
     - get: aws-greengrass
     - get: edge-vm
 
-  - task: add-skyway-edge-gateway
-    file: pipeline/tasks/add-skyway-edge-gateway/task.yml
-    params: *skyway_params_{{ loop.index }}
+  - task: add-cloud-to-edge-edge-gateway
+    file: pipeline/tasks/add-cloud-to-edge-edge-gateway/task.yml
+    params: *c2e_params_{{ loop.index }}
 
 - name: edge-activate-{{ range.min }}-{{ range.max }}
   plan:
@@ -244,9 +244,9 @@ jobs:
     - get: aws-greengrass
     - get: edge-vm
 
-  - task: skyway-edge-gateway-configure
+  - task: cloud-to-edge-edge-gateway-configure
     file: pipeline/tasks/edge-gateway-configure/task.yml
-    params: *skyway_params_{{ loop.index }}
+    params: *c2e_params_{{ loop.index }}
 {% endfor %}
 
 - name: deploy-finish-VERSION-72{{ config_version|default("") }}
@@ -263,4 +263,4 @@ jobs:
 
   - task: deploy-finish-VERSION-72{{ config_version|default("") }}
     file: pipeline/tasks/noop/task.yml
-    params: *skyway-params
+    params: *cloud-to-edge-params

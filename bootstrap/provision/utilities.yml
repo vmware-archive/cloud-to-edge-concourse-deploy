@@ -5,7 +5,7 @@
   become: True
   vars:
     deploy_user: vmware
-    solution_name: skyway
+    solution_name: cloud-to-edge
     web_root: /home/{{ deploy_user }}/deployroot/{{ solution_name }}-deploy/downloads
     nginx_sites:
       default:

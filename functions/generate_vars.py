@@ -9,8 +9,8 @@ group_var_all = "group_vars/all/vars.yml"
 # There will be some sort of whitespace, explicity change that whitespace to
 # newline and correct indentation.
 force_multiline = [
-    "skyway_edge_vm_ssh_priv_key",
-    "skyway_edge_vm_ssh_pub_key"
+    "c2e_edge_vm_ssh_priv_key",
+    "c2e_edge_vm_ssh_pub_key"
 ]
 
 def emit_var(key, value, vars_file):
@@ -29,7 +29,7 @@ def generate_vars(args=None):
     group_vars.write("---\n")
     for k, v in os.environ.items():
         # Emit our own variables
-        if re.search("^skyway", k, re.IGNORECASE):
+        if re.search("^c2e", k, re.IGNORECASE):
             emit_var(k, v, group_vars)
         # Emit variables for cloud providers
         elif re.search("^aws", k, re.IGNORECASE):

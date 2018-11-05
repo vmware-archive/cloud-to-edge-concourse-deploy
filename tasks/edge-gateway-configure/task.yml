@@ -11,7 +11,7 @@ image_resource:
 
 params:
   ENABLE_ANSIBLE_DEBUG:
-  SKYWAY_INSTALLER:
+  C2E_INSTALLER:
   NTPSERVERS:
   DNSSERVER:
   DNSDOMAIN:
@@ -22,12 +22,12 @@ params:
   base_ova_name_arm:
   base_ova_origin:
   base_ova_origin_arm:
-  skyway_edge_vm_basename:
-  skyway_edge_vm_user:
-  skyway_edge_vm_password:
-  skyway_edge_vm_ssh_priv_key:
-  skyway_edge_vm_ssh_pub_key:
-  skyway_edge_deploy_size:
+  c2e_edge_vm_basename:
+  c2e_edge_vm_user:
+  c2e_edge_vm_password:
+  c2e_edge_vm_ssh_priv_key:
+  c2e_edge_vm_ssh_pub_key:
+  c2e_edge_deploy_size:
   GIT_KEY:
   azure_iot_enable:
   azure_cli_application_id:
@@ -45,10 +45,10 @@ params:
   greengrass_device_stub:
   greengrass_device_count:
   greengrass_deploy:
-  skyway_edges:
-  skyway_edge_start:
-  skyway_edge_end:
-  skyway_bundle_params:
+  c2e_edges:
+  c2e_edge_start:
+  c2e_edge_end:
+  c2e_bundle_params:
 
 inputs:
   - name: pipeline

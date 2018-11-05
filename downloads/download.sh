@@ -15,6 +15,6 @@ if [ ! -f xenial-server-cloudimg-amd64.ova ]; then
 fi
 
 if [ ! -f xenial-server-cloudimg-arm64.ova ]; then
-  curl -L -o xenial-server-cloudimg-arm64.ova https://s3-us-west-2.amazonaws.com/skyway-dl/xenial-server-cloudimg-arm64.ova
+  curl -L -o xenial-server-cloudimg-arm64.ova https://s3-us-west-2.amazonaws.com/cloud-to-edge-dl/xenial-server-cloudimg-arm64.ova
   echo "Copied arm64 image."
 fi
