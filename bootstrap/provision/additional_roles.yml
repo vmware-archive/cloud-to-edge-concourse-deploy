@@ -3,9 +3,9 @@
 # get these roles using ansible-galaxy
 ---
 - name: vmware.azure-iot
-  src: git+ssh://git@gitlab.com/vmworld2018/ansible-role-azure-iot.git
+  src: git+ssh://git@github.com/vmware/ansible-role-microsoft-azure-iot.git
 - name: vmware.azure-edge
-  src: git+ssh://git@gitlab.com/vmworld2018/ansible-role-azure-edge.git
+  src: git+ssh://git@github.com/vmware/ansible-role-microsoft-azure-edge.git
 - name: nginx
   src: jdauphant.nginx
   version: v2.18.1
