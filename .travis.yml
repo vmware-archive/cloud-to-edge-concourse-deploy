@@ -1,0 +1,26 @@
+---
+stages:
+  - test_additional_roles
+  - test_generic_task
+
+language: python
+
+sudo: required
+
+services:
+  - docker
+
+addons:
+  apt:
+    update: true
+
+jobs:
+  include:
+    - stage: test_additional_roles
+      script:
+        - ansible-galaxy install -r bootstrap/provision/additional_roles.yml -v -v
+    - stage: test_generic_task
+      script:
+        - ansible-galaxy install -r bootstrap/provision/additional_roles.yml -v -v
+        - cd tasks/generic-ansible
+        - ./task.sh --host-role localhost=vmware.azure-iot
