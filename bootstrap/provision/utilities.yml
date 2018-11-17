@@ -15,12 +15,3 @@
          - autoindex on
   roles:
     - nginx
-  tasks:
-    - name: download ovftool
-      get_url:
-          url: "https://www.dropbox.com/s/n5pepfatetp55q2/VMware-ovftool-4.3.0-7948156-lin.x86_64.bundle?dl=1"
-          dest: /home/{{ deploy_user }}/deployroot/{{ solution_name }}-deploy/downloads
-      register: download_ovftool
-      retries: 5
-      delay: 5
-      until: not download_ovftool.failed
