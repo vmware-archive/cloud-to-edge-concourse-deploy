@@ -19,11 +19,14 @@ netmask: 255.255.255.0                    # EDIT
 # Host a Webserver to serve the ova images.
 # The web server is set up automatically by automation, but you should set the
 # IP address here.
-binary_webserver: http://10.sample.ip.100:8080
+binary_webserver: http://10.sample.ip.100
 
 # Download base ova, e.g.
 # https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64.ova
-base_ova: xenial-server-cloudimg-amd64.ova
+# These should be available at the webserver above.  (The automation will save
+# downloaded files into the webroot of the deployed server.)
+base_ova_name: xenial-server-cloudimg-amd64.ova
+base_ova_name_arm: xenial-server-cloudimg-arm64.ova
 
 # Ensure ovftool is minimally v4.2
 # https://my.vmware.com/group/vmware/details?productId=614&downloadGroup=OVFTOOL420#
@@ -101,6 +104,9 @@ c2e_edges:
 c2e_edge_deploy_size: small
 
 # ===== Azure IoT Settings =====
+# Globally enable/disable Azure IoT
+azure_iot_enable: true
+
 # Azure auth settings
 azure_cli_application_id: FIXME
 azure_cli_application_key: FIXME
@@ -119,6 +125,9 @@ azure_iot_edge_names:
   - mygroup-5
 
 # ===== AWS Greengrass Settings =====
+# Globally enable/disable AWS Greengrass
+aws_greengrass_enable: true
+
 # AWS auth settings
 aws_access_key: FIXME
 aws_secret_key: FIXME

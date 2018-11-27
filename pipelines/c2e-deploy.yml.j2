@@ -102,35 +102,32 @@ resources:
 - name: pipeline
   type: git
   source:
-    uri: git@github.com:vmware/cloud-to-edge-concourse-deploy.git
+    uri: https://github.com/vmware/cloud-to-edge-concourse-deploy.git
     branch: master
 
 - name: automation
   type: git
   source:
-    uri: git@github.com:vmware/cloud-to-edge-automation
+    uri: https://github.com/vmware/cloud-to-edge-automation
     branch: master
 
 - name: provider2-iot
   type: git
   source:
-    uri: git@github.com:vmware/ansible-role-azure-iot
+    uri: https://github.com/vmware/ansible-role-microsoft-azure-iot.git
     branch: master
-    private_key: ((git_key))
 
 - name: provider2-edge
   type: git
   source:
-    uri: git@github.com:vmware/ansible-role-azure-edge
+    uri: https://github.com/vmware/ansible-role-microsoft-azure-edge.git
     branch: master
-    private_key: ((git_key))
 
 - name: edge-vm
   type: git
   source:
-    uri: git@github.com:vmware/ansible-role-cloud-to-edge-vm
+    uri: https://github.com/vmware/ansible-role-cloud-to-edge-vm.git
     branch: master
-    private_key: ((git_key))
 
 - name: aws-greengrass
   type: git
@@ -303,10 +300,10 @@ jobs:
     file: pipeline/tasks/edge-gateway-configure/task.yml
     params: *c2e_params_{{ loop.index }}
 
-  - put: scratch
-    params:
-      repository: scratch-out
-      rebase: true
+  # - put: scratch
+  #   params:
+  #     repository: scratch-out
+  #     rebase: true
 {% endfor %}
 
 - name: deploy-finish-VERSION-{{ config_version|default("") }}
