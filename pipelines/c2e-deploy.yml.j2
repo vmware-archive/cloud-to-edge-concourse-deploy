@@ -1,7 +1,9 @@
 ---
 # Use reference instead of repeating the cloud-to-edge params
 c2e_params: &cloud-to-edge-params
+  config_version: VERSION-{{ config_version|default("") }}
   ENABLE_ANSIBLE_DEBUG: ((enable_ansible_debug))
+  enable_cloud_debug: ((enable_cloud_debug))
   C2E_INSTALLER: ((c2e_installer))
   NTPSERVERS: ((ntpservers))
   DNSSERVER: ((dnsserver))
@@ -62,7 +64,7 @@ groups:
   - edge-cfg-{{ range.min }}-{{ range.max }}
   - edge-activate-{{ range.min }}-{{ range.max }}
 {% endfor %}
-  - deploy-finish-VERSION-72{{ config_version|default("") }}
+  - deploy-finish-VERSION-{{ config_version|default("") }}
 
 - name: cloud-provider
   jobs:
@@ -79,7 +81,7 @@ groups:
 
 - name: complete
   jobs:
-  - deploy-finish-VERSION-72{{ config_version|default("") }}
+  - deploy-finish-VERSION-{{ config_version|default("") }}
 
 # - name: cleanup
 #   jobs:
@@ -91,20 +93,23 @@ resource_types:
   source:
     repository: pivotalservices/concourse-curl-resource
 
+- name: git-retry
+  type: docker-image
+  source:
+    repository: huxoll/git-resource
+
 resources:
 - name: pipeline
   type: git
   source:
     uri: git@github.com:vmware/cloud-to-edge-concourse-deploy.git
     branch: master
-    private_key: ((git_key))
 
 - name: automation
   type: git
   source:
     uri: git@github.com:vmware/cloud-to-edge-automation
     branch: master
-    private_key: ((git_key))
 
 - name: provider2-iot
   type: git
@@ -152,6 +157,15 @@ resources:
     filename: ((ovftool_image))
     skip_ssl_verification: true
 
+# For debugging, add a scratch resource, to which the pipeline
+# can write logs and metrics
+# - name: scratch
+#   type: git-retry
+#   source:
+#     uri: https://some-git-url/scratch-resource.git
+#     branch: master
+#     private_key: ((git_key))
+
 jobs:
 
 - name: deploy
@@ -162,10 +176,16 @@ jobs:
     - get: base-ova
     - get: ovftool
     - get: aws-greengrass
+    # - get: scratch
 
   - task: install-cloud-to-edge
     file: pipeline/tasks/install-cloud-to-edge/task.yml
     params: *cloud-to-edge-params
+
+  # - put: scratch
+  #   params:
+  #     repository: scratch-out
+  #     rebase: true
 
 - name: cloud-build
   plan:
@@ -178,10 +198,18 @@ jobs:
     - get: provider2-iot
     - get: provider2-edge
     - get: aws-greengrass
+    # - get: scratch
+    #   passed: [deploy]
+    #   trigger: true
 
   - task: initialize-cloud-iot
     file: pipeline/tasks/initialize-cloud-iot/task.yml
     params: *cloud-to-edge-params
+
+  # - put: scratch
+  #   params:
+  #     repository: scratch-out
+  #     rebase: true
 
 - name: edge-build
   plan:
@@ -194,10 +222,18 @@ jobs:
     - get: provider2-iot
     - get: provider2-edge
     - get: aws-greengrass
+    # - get: scratch
+    #   passed: [cloud-build]
+    #   trigger: true
 
   - task: deploy-edge-version
     file: pipeline/tasks/deploy-edge-version/task.yml
     params: *cloud-to-edge-params
+
+  # - put: scratch
+  #   params:
+  #     repository: scratch-out
+  #     rebase: true
 
 {% for range in ranges %}
 - name: vm-build-{{ range.min }}-{{ range.max }}
@@ -209,10 +245,18 @@ jobs:
       passed: [edge-build]
       trigger: true
     - get: edge-vm
+    # - get: scratch
+    #   passed: [edge-build]
+    #   trigger: true
 
   - task: vm-build
     file: pipeline/tasks/launch-edge-gateway-vm/task.yml
     params: *c2e_params_{{ loop.index }}
+
+  # - put: scratch
+  #   params:
+  #     repository: scratch-out
+  #     rebase: true
 
 - name: edge-cfg-{{ range.min }}-{{ range.max }}
   plan:
@@ -226,10 +270,18 @@ jobs:
     - get: provider2-edge
     - get: aws-greengrass
     - get: edge-vm
+    # - get: scratch
+    #   passed: [vm-build-{{ range.min }}-{{ range.max }}]
+    #   trigger: true
 
   - task: add-cloud-to-edge-edge-gateway
     file: pipeline/tasks/add-cloud-to-edge-edge-gateway/task.yml
     params: *c2e_params_{{ loop.index }}
+
+  # - put: scratch
+  #   params:
+  #     repository: scratch-out
+  #     rebase: true
 
 - name: edge-activate-{{ range.min }}-{{ range.max }}
   plan:
@@ -243,13 +295,21 @@ jobs:
     - get: provider2-edge
     - get: aws-greengrass
     - get: edge-vm
+    # - get: scratch
+    #   passed: [edge-cfg-{{ range.min }}-{{ range.max }}]
+    #   trigger: true
 
   - task: cloud-to-edge-edge-gateway-configure
     file: pipeline/tasks/edge-gateway-configure/task.yml
     params: *c2e_params_{{ loop.index }}
+
+  - put: scratch
+    params:
+      repository: scratch-out
+      rebase: true
 {% endfor %}
 
-- name: deploy-finish-VERSION-72{{ config_version|default("") }}
+- name: deploy-finish-VERSION-{{ config_version|default("") }}
   plan:
   - aggregate:
     - get: pipeline
@@ -260,7 +320,13 @@ jobs:
         - edge-activate-{{ range.min }}-{{ range.max }}
 {% endfor %}
       trigger: true
+    # - get: scratch
 
-  - task: deploy-finish-VERSION-72{{ config_version|default("") }}
+  - task: deploy-finish-VERSION-{{ config_version|default("") }}
     file: pipeline/tasks/noop/task.yml
     params: *cloud-to-edge-params
+
+  # - put: scratch
+  #   params:
+  #     repository: scratch-out
+  #     rebase: true
