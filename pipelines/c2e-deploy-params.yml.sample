@@ -113,7 +113,7 @@ c2e_edge_deploy_size: small
 # variables to be explicitly listed, and tasks need to redefine them to expose
 # them inside a job, this list of key/value pairs "tunnels" additional settings
 # without needing to add them to formal
-skyway_bundle_params: []
+c2e_bundle_params: []
 
 # ===== Azure IoT Settings =====
 # Globally enable/disable Azure IoT
