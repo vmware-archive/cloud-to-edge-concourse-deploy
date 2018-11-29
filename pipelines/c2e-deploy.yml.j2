@@ -271,8 +271,8 @@ jobs:
     #   passed: [vm-build-{{ range.min }}-{{ range.max }}]
     #   trigger: true
 
-  - task: add-cloud-to-edge-edge-gateway
-    file: pipeline/tasks/add-cloud-to-edge-edge-gateway/task.yml
+  - task: add-cloud-to-edge-gateway
+    file: pipeline/tasks/add-cloud-to-edge-gateway/task.yml
     params: *c2e_params_{{ loop.index }}
 
   # - put: scratch

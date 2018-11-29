@@ -1,5 +1,7 @@
 # set value to true for verbose output from ansible
 enable_ansible_debug: false
+# If true, emit extra logging around cloud API calls
+enable_cloud_debug: false
 # Set to name of installer or env or any value so resources can be identified
 c2e_installer: cloud-to-edge-concourse
 
@@ -37,6 +39,10 @@ c2e_edge_vm_basename: edgevm
 # Default credentials to add to Edge VMs
 c2e_edge_vm_user: edgevm
 c2e_edge_vm_password: c2e-passZ!
+
+# This will serve as a default if no specific network is provided in
+# skway_edges
+c2e_edge_vm_network: VM-RegionA01-vDS-COMP
 
 # Private key for connecting to Edge VMs.  If set, should correspond to the
 # pub key below
@@ -103,6 +109,12 @@ c2e_edges:
 # Change default size for deployment for edge VMs
 c2e_edge_deploy_size: small
 
+# This is a catch all for customization.  Since concourse config requires all
+# variables to be explicitly listed, and tasks need to redefine them to expose
+# them inside a job, this list of key/value pairs "tunnels" additional settings
+# without needing to add them to formal
+skyway_bundle_params: []
+
 # ===== Azure IoT Settings =====
 # Globally enable/disable Azure IoT
 azure_iot_enable: true
@@ -131,6 +143,7 @@ aws_greengrass_enable: true
 # AWS auth settings
 aws_access_key: FIXME
 aws_secret_key: FIXME
+aws_region: us-west-2
 
 # AWS Greengrass settings
 # This S3 bucket is used to store credentials, lambda code, etc.
