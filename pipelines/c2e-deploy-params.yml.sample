@@ -120,6 +120,7 @@ c2e_bundle_params: []
 azure_iot_enable: true
 
 # Azure auth settings
+# See: https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-create-service-principal-portal
 azure_cli_application_id: FIXME
 azure_cli_application_key: FIXME
 azure_cli_tenant_id: FIXME
@@ -127,7 +128,7 @@ azure_cli_tenant_id: FIXME
 # Name of the IoT hub
 azure_iot_hub_name: ci-iot-hub
 
-# Group to contain the IoT resources (will be created).
+# Group to contain the IoT resources (will be created if it does not exist).
 azure_iot_group: ci-iot-group
 
 # Names for the Edges to be created.
@@ -135,6 +136,30 @@ azure_iot_edge_names:
   - mygroup-1
   - mygroup-4
   - mygroup-5
+
+# List of modules to deploy at the edge gateway.
+# The default is a sample simulated temperature sensor.
+azure_modules:
+  - name: tempSensor
+    image: mcr.microsoft.com/azureiotedge-simulated-temperature-sensor:1.0
+    desiredStatus: running
+    restartPolicy: always
+    createOptions: {}
+    desiredProperties: {}
+
+# Routes to ensure messages reach their destination.
+# This default just sends the temperature sensor to the hub.
+azure_routes:
+  - name: tempSensorToIoTHub
+    route: FROM /messages/modules/tempSensor/outputs/* INTO $upstream
+
+# Tag used to designate edges we deploy.
+# It can have a different name but should be set for correct operation.
+auto_edge_tag: automatic_edge
+
+# Tag used to designate devices we create
+# It can have a different name but should be set for correct operation.
+auto_device_tag: automatic_device
 
 # ===== AWS Greengrass Settings =====
 # Globally enable/disable AWS Greengrass
